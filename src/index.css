@@ -2,14 +2,16 @@
   --primary-color: #4318FF;
   --primary-text-color: #2B3674;
   --secondary-text-color: #A3AED0;
+  --input-text-color: #7A88AF;
   --bg-light: #f4f7fe;
+  --bg-white: #ffffff;
   --input-border: #e0e5f2;
   --button-hover: #2c11a4;
   --link-color: #2563eb;
   --font-base: 'DM Sans', sans-serif;
 
   color-scheme: light;
-  background-color: #ffffff;
+  background-color: var(--bg-light);
   color: var(--primary-text-color);
   font-family: var(--font-base);
   line-height: 1.5;
@@ -27,7 +29,7 @@ html, body {
   height: 100%;
   width: 100%;
   font-family: var(--font-base);
-  background-color: #fff;
+  background-color: var(--bg-light);
   color: var(--primary-text-color);
 }
 
