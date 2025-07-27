@@ -1,0 +1,121 @@
+* {
+  box-sizing: border-box;
+}
+
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--bg-light);
+  margin: auto;
+}
+
+.login-card {
+  background: white;
+  padding: 40px 30px;
+  width: 420px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+  font-size: 28px;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--primary-text-color);
+}
+
+.login-subtitle {
+  font-size: 14px;
+  text-align: center;
+  color: var(--secondary-text-color);
+  margin-bottom: 24px;
+}
+
+.login-form .form-group {
+  margin-bottom: 20px;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: var(--primary-text-color);
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: var(--bg-light);
+  color: var(--primary-text-color);
+}
+
+.login-form input::placeholder {
+  color: var(--secondary-text-color);
+  opacity: 1; /* ensures full color visibility */
+}
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.form-footer .remember {
+  font-size: 13px;
+  color: var(--primary-text-color);
+}
+
+.form-footer input[type="checkbox"] {
+  margin-right: 6px;
+}
+
+.forgot-password {
+  font-size: 13px;
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.login-button {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: var(--button-hover);
+}
+
+.register-link {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--secondary-text-color);
+}
+
+.register-link a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
