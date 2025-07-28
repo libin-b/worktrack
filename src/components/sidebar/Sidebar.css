@@ -46,6 +46,7 @@
   background-color: #f4f7fe; /* match your --bg-light */
   font-weight: 600;
   color: var(--primary-text-color);
+  text-decoration: none;
 }
 
 .nav-item:hover .nav-icon {

@@ -4,7 +4,8 @@ import {
   FaUserFriends,
   FaUserPlus,
   FaEnvelope,
-  FaChartBar
+  FaChartBar,
+  FaTachometerAlt
 } from 'react-icons/fa';
 import './Sidebar.css';
 
@@ -15,6 +16,13 @@ export default function Sidebar() {
     <aside className="main-sidebar">
       <div className="sidebar-title">WorkTrack</div>
       <nav className="nav-links">
+        <Link
+          to="/dashboard"
+          className={`nav-item ${location.pathname === '/dashboard' ? 'active' : ''}`}
+        >
+          <FaTachometerAlt className="nav-icon" />
+          Dashboard
+        </Link>
         <Link
           to="/calendar"
           className={`nav-item ${location.pathname === '/calendar' ? 'active' : ''}`}
