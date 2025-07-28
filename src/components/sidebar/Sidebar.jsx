@@ -1,5 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
-import { FaTachometerAlt, FaCalendarAlt, FaUserFriends, FaChartBar } from 'react-icons/fa';
+import {
+  FaCalendarAlt,
+  FaUserFriends,
+  FaUserPlus,
+  FaEnvelope,
+  FaChartBar
+} from 'react-icons/fa';
 import './Sidebar.css';
 
 export default function Sidebar() {
@@ -9,13 +15,6 @@ export default function Sidebar() {
     <aside className="main-sidebar">
       <div className="sidebar-title">WorkTrack</div>
       <nav className="nav-links">
-        <Link
-          to="/dashboard"
-          className={`nav-item ${location.pathname === '/dashboard' ? 'active' : ''}`}
-        >
-          <FaTachometerAlt className="nav-icon" />
-          Dashboard
-        </Link>
         <Link
           to="/calendar"
           className={`nav-item ${location.pathname === '/calendar' ? 'active' : ''}`}
@@ -28,7 +27,14 @@ export default function Sidebar() {
           className={`nav-item ${location.pathname === '/employees' ? 'active' : ''}`}
         >
           <FaUserFriends className="nav-icon" />
-          Employees
+          Overall Employees
+        </Link>
+        <Link
+          to="/add-employee"
+          className={`nav-item ${location.pathname === '/add-employee' ? 'active' : ''}`}
+        >
+          <FaUserPlus className="nav-icon" />
+          Add New Employee
         </Link>
         <Link
           to="/leave"
@@ -38,11 +44,18 @@ export default function Sidebar() {
           Leave Management
         </Link>
         <Link
-          to="/kpi"
-          className={`nav-item ${location.pathname === '/kpi' ? 'active' : ''}`}
+          to="/messages"
+          className={`nav-item ${location.pathname === '/messages' ? 'active' : ''}`}
+        >
+          <FaEnvelope className="nav-icon" />
+          Messages from Employee
+        </Link>
+        <Link
+          to="/performance"
+          className={`nav-item ${location.pathname === '/performance' ? 'active' : ''}`}
         >
           <FaChartBar className="nav-icon" />
-          KRA / KPI
+          View Performance
         </Link>
       </nav>
     </aside>

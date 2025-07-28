@@ -58,7 +58,7 @@
 
 .login-form input::placeholder {
   color: var(--secondary-text-color);
-  opacity: 1; /* ensures full color visibility */
+  opacity: 1;
 }
 
 .form-footer {
@@ -77,16 +77,6 @@
   margin-right: 6px;
 }
 
-.forgot-password {
-  font-size: 13px;
-  color: var(--link-color);
-  text-decoration: none;
-}
-
-.forgot-password:hover {
-  text-decoration: underline;
-}
-
 .login-button {
   width: 100%;
   padding: 14px;
@@ -101,21 +91,4 @@
 
 .login-button:hover {
   background-color: var(--button-hover);
-}
-
-.register-link {
-  margin-top: 24px;
-  text-align: center;
-  font-size: 13px;
-  color: var(--secondary-text-color);
-}
-
-.register-link a {
-  color: var(--link-color);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.register-link a:hover {
-  text-decoration: underline;
 }

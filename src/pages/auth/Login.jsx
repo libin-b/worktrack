@@ -1,22 +1,30 @@
 import React from 'react';
 import './Login.css';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    navigate('/dashboard'); // Redirect to dashboard
+  };
+
   return (
     <div className="login-wrapper">
       <div className="login-card">
         <h2 className="login-title">Sign In</h2>
         <p className="login-subtitle">Enter your email and password to sign in!</p>
 
-        <form className="login-form">
+        <form className="login-form" onSubmit={handleLogin}>
           <div className="form-group">
             <label>Email*</label>
-            <input type="email" placeholder="mail@simmple.com" />
+            <input type="email" placeholder="mail@simmple.com" required />
           </div>
 
           <div className="form-group">
             <label>Password*</label>
-            <input type="password" placeholder="Min. 8 characters" />
+            <input type="password" placeholder="Min. 8 characters" required />
           </div>
 
           <div className="form-footer">
@@ -28,10 +36,6 @@ const Login = () => {
 
           <button type="submit" className="login-button">Sign In</button>
         </form>
-
-        {/* <p className="register-link">
-          Not registered yet? <a href="#">Create an Account</a>
-        </p> */}
       </div>
     </div>
   );
