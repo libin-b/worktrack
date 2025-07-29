@@ -4,7 +4,8 @@ import Login from './pages/auth/Login';
 import Layout from './components/layout/Layout';
 import DashboardHR from './pages/DashboardHR';
 import CalendarPage from './pages/CalendarPage'; // calendar component
-
+import AddEmployee from './pages/employees/AddEmployee';
+import EmployeesList from './pages/employees/EmployeesList';
 // Placeholder for other routes
 const Placeholder = ({ title }) => (
   <div style={{ padding: '20px' }}>
@@ -41,12 +42,21 @@ function App() {
           }
         />
 
-        {/* Other placeholders */}
+        {/* Employees Routes */}
         <Route
           path="/employees"
           element={
             <Layout>
-              <Placeholder title="Overall Employees" />
+              <EmployeesList />
+            </Layout>
+          }
+        />
+        
+        <Route
+          path="/employees/add"
+          element={
+            <Layout>
+              <AddEmployee />
             </Layout>
           }
         />
@@ -54,7 +64,7 @@ function App() {
           path="/add-employee"
           element={
             <Layout>
-              <Placeholder title="Add New Employee" />
+              <AddEmployee />
             </Layout>
           }
         />
