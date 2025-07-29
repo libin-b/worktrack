@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/common/Breadcrumb';
-import { FiSearch, FiCalendar, FiFilter, FiEdit2, FiTrash2, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiSearch, FiCalendar, FiFilter, FiEdit, FiTrash2, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import DataTable from 'react-data-table-component';
 import './EmployeesList.css';
 
@@ -73,13 +73,16 @@ const EmployeesList = () => {
 
   const handleEdit = (employeeId) => {
     // In a real app, this would navigate to an edit page
-    console.log('Edit employee:', employeeId);
     // navigate(`/employees/edit/${employeeId}`);
+    //navigate to add page for now
+    console.log(`Editing employee with ID: ${employeeId}`);
+    navigate(`/employees/add`);
   };
 
   const handleDelete = (employeeId) => {
     if (window.confirm('Are you sure you want to delete this employee?')) {
-      setEmployees(employees.filter(emp => emp.id !== employeeId));
+      // In a real app, this would make an API call to delete the employee
+      console.log(`Deleting employee with ID: ${employeeId}`);
     }
   };
 
@@ -142,7 +145,7 @@ const EmployeesList = () => {
               handleEdit(row.id);
             }}
           >
-            <FiEdit2 />
+            <FiEdit />
           </button>
           <button 
             className="action-btn delete"
@@ -164,6 +167,7 @@ const EmployeesList = () => {
   // Handle row click
   const handleRowClicked = (row) => {
     // Navigate to employee details or edit page
+    console.log(`Row clicked: ${row.id}`);
     // navigate(`/employees/${row.id}`);
   };
 
@@ -220,41 +224,38 @@ const EmployeesList = () => {
   );
 
   return (
-    <div className="employees-container">
-      <Breadcrumb items={breadcrumbItems} />
-      
-      <div className="employees-header">
-        <h2>Employees</h2>
-        <div className="search-container">
-          <div className="search-input">
-            <FiSearch className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search employees by name, email, or ID"
-              value={searchQuery}
-              onChange={handleSearch}
-            />
-          </div>
-          <div className="date-filters">
-            <div className="date-filter">
-              <span>From Date</span>
-              <div className="date-input">
-                <input type="date" />
-                <FiCalendar className="calendar-icon" />
-              </div>
+    <div className="view-container">
+      <Breadcrumb items={breadcrumbItems} />      
+      <h2>Employees</h2>
+      <div className="table-filter-container">
+        <div className="search-input">
+          <FiSearch className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search employees by name, email, or ID"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+        </div>
+        <div className="date-filters">
+          <div className="date-filter">
+            <span>From Date</span>
+            <div className="date-input">
+              <input type="date" />
+              {/* <FiCalendar className="calendar-icon" /> */}
             </div>
-            <div className="date-filter">
-              <span>To Date</span>
-              <div className="date-input">
-                <input type="date" />
-                <FiCalendar className="calendar-icon" />
-              </div>
-            </div>
-            <button className="filter-btn">
-              <FiFilter />
-              <span>Filter</span>
-            </button>
           </div>
+          <div className="date-filter">
+            <span>To Date</span>
+            <div className="date-input">
+              <input type="date" />
+              {/* <FiCalendar className="calendar-icon" /> */}
+            </div>
+          </div>
+          <button className="filter-btn">
+            <FiFilter />
+            <span>Filter</span>
+          </button>
         </div>
       </div>
 

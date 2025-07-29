@@ -1,21 +1,17 @@
-.employees-container {
+.view-container {
   padding: 24px;
   background-color: var(--bg-light);
   min-height: 100vh;
 }
 
-.employees-header {
-  margin-bottom: 24px;
-}
-
-.employees-header h2 {
+.view-container h2 {
   font-size: 24px;
   font-weight: 700;
   color: var(--primary-text-color);
   margin-bottom: 20px;
 }
 
-.search-container {
+.table-filter-container {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -23,8 +19,10 @@
   margin-bottom: 24px;
 }
 
+
 .search-input {
   position: relative;
+  align-self: flex-end;
   flex: 1;
   min-width: 250px;
   max-width: 400px;
@@ -47,7 +45,7 @@
   box-shadow: 0 0 0 3px rgba(67, 24, 255, 0.1);
 }
 
-.search-icon {
+.table-filter-container .search-icon {  
   position: absolute;
   left: 12px;
   top: 50%;
@@ -79,11 +77,11 @@
 }
 
 .date-input input {
-  padding: 10px 32px 10px 12px;
+  padding: 10px 12px 10px 12px;
   border: 1px solid var(--input-border);
   border-radius: 8px;
   font-size: 14px;
-  color: var(--primary-text-color);
+  color: var(--input-text-color);
   background-color: var(--bg-white);
   cursor: pointer;
 }
@@ -190,10 +188,11 @@
   gap: 8px;
 }
 
-.action-btn {
+.action-btn {  
+  all: unset; /* removes inherited styles */
   width: 32px;
   height: 32px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   border: none;
@@ -202,6 +201,10 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
+.action-btn svg {
+  font-size: 18px; /* or 1rem or whatever you want */
+}
+
 
 .action-btn.edit {
   color: var(--primary-color);
@@ -281,7 +284,7 @@
 
 /* Responsive styles */
 @media (max-width: 1024px) {
-  .search-container {
+  .table-filter-container {
     flex-direction: column;
   }
   
@@ -306,7 +309,7 @@
 }
 
 @media (max-width: 1024px) {
-  .search-container {
+  .table-filter-container {
     flex-direction: column;
   }
   
