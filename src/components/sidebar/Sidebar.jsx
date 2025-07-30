@@ -18,49 +18,67 @@ export default function Sidebar() {
       <nav className="nav-links">
         <Link
           to="/dashboard"
-          className={`nav-item ${location.pathname === '/dashboard' ? 'active' : ''}`}
+          className={`nav-item ${
+            location.pathname === "/dashboard" ||
+            location.pathname === "/dashboard/manager" ||
+            location.pathname === "/dashboard/employee"
+              ? "active"
+              : ""
+          }`}
         >
           <FaTachometerAlt className="nav-icon" />
           Dashboard
         </Link>
         <Link
           to="/calendar"
-          className={`nav-item ${location.pathname === '/calendar' ? 'active' : ''}`}
+          className={`nav-item ${
+            location.pathname === "/calendar" ? "active" : ""
+          }`}
         >
           <FaCalendarAlt className="nav-icon" />
           Calendar
         </Link>
         <Link
           to="/employees"
-          className={`nav-item ${location.pathname === '/employees' ? 'active' : ''}`}
+          className={`nav-item ${
+            location.pathname === "/employees" ? "active" : ""
+          }`}
         >
           <FaUserFriends className="nav-icon" />
           Overall Employees
         </Link>
         <Link
           to="/add-employee"
-          className={`nav-item ${location.pathname === '/add-employee' ? 'active' : ''}`}
+          className={`nav-item ${
+            location.pathname === "/add-employee" ? "active" : ""
+          }`}
         >
           <FaUserPlus className="nav-icon" />
           Add New Employee
         </Link>
         <Link
           to="/leave"
-          className={`nav-item ${location.pathname === '/leave' ? 'active' : ''}`}
+          className={`nav-item ${
+            location.pathname === "/leave" ? "active" : ""
+          }`}
         >
           <FaCalendarAlt className="nav-icon" />
           Leave Management
         </Link>
         <Link
           to="/messages"
-          className={`nav-item ${location.pathname === '/messages' ? 'active' : ''}`}
+          className={`nav-item ${
+            location.pathname === "/messages" ? "active" : ""
+          }`}
         >
           <FaEnvelope className="nav-icon" />
           Messages from Employee
         </Link>
         <Link
           to="/performance"
-          className={`nav-item ${location.pathname === '/performance' ? 'active' : ''}`}
+          className={`nav-item ${
+            location.pathname === "/performance" ? "active" : ""
+          }`}
         >
           <FaChartBar className="nav-icon" />
           View Performance
