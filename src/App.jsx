@@ -6,6 +6,7 @@ import DashboardHR from './pages/DashboardHR';
 import CalendarPage from './pages/CalendarPage'; // calendar component
 import AddEmployee from './pages/employees/AddEmployee';
 import EmployeesList from './pages/employees/EmployeesList';
+import LeaveManagement from './pages/leaves/LeaveManagement';
 // Placeholder for other routes
 const Placeholder = ({ title }) => (
   <div style={{ padding: '20px' }}>
@@ -72,7 +73,7 @@ function App() {
           path="/leave"
           element={
             <Layout>
-              <Placeholder title="Leave Management" />
+              <LeaveManagement />
             </Layout>
           }
         />

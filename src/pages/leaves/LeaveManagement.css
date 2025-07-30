@@ -19,7 +19,6 @@
   margin-bottom: 24px;
 }
 
-
 .table-filter-container .search-input {
   position: relative;
   align-self: flex-end;
@@ -45,7 +44,7 @@
   box-shadow: 0 0 0 3px rgba(67, 24, 255, 0.1);
 }
 
-.table-filter-container .search-icon {  
+.table-filter-container .search-icon {
   position: absolute;
   left: 12px;
   top: 50%;
@@ -108,6 +107,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  height: 40px;
 }
 
 .filter-btn:hover {
@@ -159,11 +159,6 @@
   font-size: 14px;
 }
 
-.employee-name {
-  font-weight: 500;
-  color: var(--primary-text-color);
-}
-
 .status-badge {
   display: inline-block;
   padding: 4px 10px;
@@ -173,12 +168,17 @@
   text-transform: capitalize;
 }
 
-.status-badge.active {
+.status-badge.pending {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.status-badge.approved {
   background-color: rgba(34, 197, 94, 0.1);
   color: #22c55e;
 }
 
-.status-badge.inactive {
+.status-badge.rejected {
   background-color: rgba(239, 68, 68, 0.1);
   color: #ef4444;
 }
@@ -186,10 +186,11 @@
 .actions {
   display: flex;
   gap: 8px;
+  align-items: center;
 }
 
-.action-btn {  
-  all: unset; /* removes inherited styles */
+.action-btn {
+  all: unset;
   width: 32px;
   height: 32px;
   display: inline-flex;
@@ -199,61 +200,63 @@
   border-radius: 6px;
   background: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.action-btn svg {
-  font-size: 18px; /* or 1rem or whatever you want */
+  transition: all 0.2s ease;
 }
 
-
-.action-btn.edit {
-  color: var(--primary-color);
+.action-btn.approve {
+  color: #22c55e;
 }
 
-.action-btn.edit:hover {
-  background-color: rgba(67, 24, 255, 0.1);
+.action-btn.approve:hover {
+  background-color: rgba(34, 197, 94, 0.1);
 }
 
-.action-btn.delete {
+.action-btn.reject {
   color: #ef4444;
 }
 
-.action-btn.delete:hover {
+.action-btn.reject:hover {
   background-color: rgba(239, 68, 68, 0.1);
 }
 
-.no-results {
-  text-align: center;
-  padding: 40px;
+.action-text {
+  font-size: 14px;
   color: var(--secondary-text-color);
+}
+
+.text-muted {
+  color: var(--secondary-text-color);
+  font-size: 0.85em;
+}
+
+.small {
+  font-size: 0.85em;
 }
 
 /* Pagination styles */
 .rdt_Pagination {
   border-top: 1px solid var(--input-border) !important;
   padding: 16px 24px !important;
+  min-height: 72px;
 }
 
-.rdt_Pagination button {
-  color: var(--secondary-text-color) !important;
-  border: 1px solid var(--input-border) !important;
-  background: none !important;
-  border-radius: 6px !important;
-  min-width: 32px !important;
-  height: 32px !important;
-  padding: 0 8px !important;
-  margin: 0 4px !important;
-  transition: all 0.2s ease !important;
+.rdt_Pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.rdt_Pagination button[disabled] {
-  opacity: 0.5 !important;
-  cursor: not-allowed !important;
+.pagination-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
 }
 
-.rdt_Pagination button:not([disabled]):hover {
-  border-color: var(--primary-color) !important;
-  color: var(--primary-color) !important;
+.pagination-arrow:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .rdt_Pagination select {
@@ -261,8 +264,10 @@
   border-radius: 6px !important;
   padding: 4px 8px !important;
   margin: 0 8px !important;
+  font-size: 14px !important;
   color: var(--primary-text-color) !important;
   background-color: var(--bg-white) !important;
+  cursor: pointer;
 }
 
 .rdt_Pagination span {
@@ -270,99 +275,29 @@
   font-size: 14px !important;
 }
 
-/* Rows per page text */
-.rdt_Pagination .pagination-dropdown {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-right: 16px;
-}
-
-.rdt_Pagination .pagination-dropdown span {
-  white-space: nowrap;
-}
-
-/* Responsive styles */
-@media (max-width: 1024px) {
-  .table-filter-container {
-    flex-direction: column;
-  }
-  
-  .search-input {
-    max-width: 100%;
-  }
-  
-  .date-filters {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .date-filter {
-    flex: 1;
-    min-width: 140px;
-  }
-  
-  .employees-table th,
-  .employees-table td {
-    padding: 12px 16px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .table-filter-container {
-    flex-direction: column;
-  }
-  
-  .search-input {
-    max-width: 100%;
-  }
-  
-  .date-filters {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .date-filter {
-    flex: 1;
-    min-width: 140px;
-  }
-  
-  .rdt_TableCol,
-  .rdt_TableCell {
-    padding: 12px 16px;
-  }
-}
-
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .employees-container {
-    padding: 16px;
+  .table-filter-container {
+    flex-direction: column;
   }
   
-  .employees-table-container {
-    border-radius: 8px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .rdt_Table {
-    min-width: 900px;
-  }
-  
-  .rdt_Pagination {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 16px !important;
-  }
-  
-  .rdt_Pagination > div:first-child {
-    order: 2;
+  .search-input {
     width: 100%;
-    text-align: center;
-    margin-top: 8px;
+    max-width: 100%;
   }
   
-  .rdt_Pagination > div:not(:first-child) {
-    order: 1;
+  .date-filters {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  
+  .date-filter {
+    flex: 1;
+    min-width: 140px;
+  }
+  
+  .filter-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
