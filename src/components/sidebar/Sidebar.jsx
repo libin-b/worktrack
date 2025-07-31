@@ -14,12 +14,22 @@ import './Sidebar.css';
 
 export default function Sidebar() {
   const location = useLocation();
-  const path = location.pathname;
+  // const path = location.pathname;
 
   // Detect role based on path
-  const isManager = path.startsWith('/dashboard/manager') || path.startsWith('/tasks') || path.startsWith('/meetings');
-  const isEmployee = path.startsWith('/dashboard/employee');
-  const isHR = !isManager && !isEmployee;
+  // const isManager = path.startsWith('/dashboard/manager') || path.startsWith('/tasks') || path.startsWith('/meetings');
+  // const isEmployee = path.startsWith('/dashboard/employee');
+  // const isHR = !isManager && !isEmployee;
+  const userRole = localStorage.getItem('userRole');
+
+  const isManager = userRole === 'manager';
+  const isEmployee = userRole === 'employee';
+  // const isHR = userRole === 'hr';
+
+  if (!userRole) {
+    return null; 
+  }
+
 
   // Sidebar links
   const hrLinks = [
@@ -35,6 +45,7 @@ export default function Sidebar() {
   const managerLinks = [
     { to: '/dashboard/manager', label: 'Dashboard', icon: <FaTachometerAlt /> },
     { to: '/tasks', label: 'Task Assign', icon: <FaTasks /> },
+    { to: '/shift', label: 'Shift Management', icon: <FaUsersCog /> },
     { to: '/leave', label: 'Leave Approvals', icon: <FaCalendarAlt /> },
     { to: '/meetings', label: 'Meeting Planning', icon: <FaUsersCog /> },
     { to: '/performance', label: 'Employee Performance', icon: <FaChartBar /> },

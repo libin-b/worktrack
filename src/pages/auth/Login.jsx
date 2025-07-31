@@ -22,6 +22,8 @@ const Login = () => {
     const user = users[email];
 
     if (user && user.password === password) {
+      localStorage.setItem('userRole', user.role); // Save role to localStorage
+
       // Redirect based on role
       switch (user.role) {
         case 'hr':

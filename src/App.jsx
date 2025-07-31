@@ -10,9 +10,8 @@ import AddEmployee from "./pages/employees/AddEmployee";
 import EmployeesList from "./pages/employees/EmployeesList";
 import LeaveManagement from "./pages/leaves/LeaveManagement";
 import MeetingPlanning from "./pages/meetings/MeetingPlanning";
-
-
-
+import AssignShift from "./pages/shift/AssignShift";
+import ViewShift from "./pages/shift/ViewShift";
 
 // Placeholder for in-progress pages
 const Placeholder = ({ title }) => (
@@ -67,13 +66,13 @@ function App() {
           }
         />
         <Route
-  path="/meetings"
-  element={
-    <Layout>
-      <MeetingPlanning />
-    </Layout>
-  }
-/>
+          path="/meetings"
+          element={
+            <Layout>
+              <MeetingPlanning />
+            </Layout>
+          }
+        />
 
         <Route
           path="/performance"
@@ -137,6 +136,24 @@ function App() {
             <Layout>
               <LeaveManagement />
             </Layout>
+          }
+        />
+
+        {/* Shift Management */}
+        <Route 
+          path="/shift"
+          element={
+            <Layout>
+              <ViewShift />
+            </Layout>
+          }
+        />
+        <Route
+          path="/shift/assign"
+          element={
+            <Layout>
+              <AssignShift />
+            </Layout>   
           }
         />
 
