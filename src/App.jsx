@@ -5,11 +5,16 @@ import Layout from "./components/layout/Layout";
 import DashboardHR from "./pages/DashboardHR";
 import DashboardManager from "./pages/DashboardManager";
 import DashboardEmployee from "./pages/DashboardEmployee";
-import CalendarPage from "./pages/calendar/CalendarPage"; // calendar component
+import CalendarPage from "./pages/calendar/CalendarPage";
 import AddEmployee from "./pages/employees/AddEmployee";
 import EmployeesList from "./pages/employees/EmployeesList";
 import LeaveManagement from "./pages/leaves/LeaveManagement";
-// Placeholder for other routes
+import MeetingPlanning from "./pages/meetings/MeetingPlanning";
+
+
+
+
+// Placeholder for in-progress pages
 const Placeholder = ({ title }) => (
   <div style={{ padding: "20px" }}>
     <h2>{title}</h2>
@@ -33,6 +38,8 @@ function App() {
             </Layout>
           }
         />
+
+        {/* Manager Dashboard */}
         <Route
           path="/dashboard/manager"
           element={
@@ -41,6 +48,43 @@ function App() {
             </Layout>
           }
         />
+
+        {/* Manager Sub Pages (placeholders) */}
+        <Route
+          path="/tasks"
+          element={
+            <Layout>
+              <Placeholder title="Task Assignment" />
+            </Layout>
+          }
+        />
+        <Route
+          path="/meetings"
+          element={
+            <Layout>
+              <Placeholder title="Meeting Planning" />
+            </Layout>
+          }
+        />
+        <Route
+  path="/meetings"
+  element={
+    <Layout>
+      <MeetingPlanning />
+    </Layout>
+  }
+/>
+
+        <Route
+          path="/performance"
+          element={
+            <Layout>
+              <Placeholder title="Employee Performance" />
+            </Layout>
+          }
+        />
+
+        {/* Employee Dashboard */}
         <Route
           path="/dashboard/employee"
           element={
@@ -50,7 +94,7 @@ function App() {
           }
         />
 
-        {/*  Real Calendar Page */}
+        {/* Calendar */}
         <Route
           path="/calendar"
           element={
@@ -60,7 +104,7 @@ function App() {
           }
         />
 
-        {/* Employees Routes */}
+        {/* Employees */}
         <Route
           path="/employees"
           element={
@@ -69,7 +113,6 @@ function App() {
             </Layout>
           }
         />
-
         <Route
           path="/employees/add"
           element={
@@ -86,6 +129,8 @@ function App() {
             </Layout>
           }
         />
+
+        {/* Leave Management */}
         <Route
           path="/leave"
           element={
@@ -94,6 +139,8 @@ function App() {
             </Layout>
           }
         />
+
+        {/* Common Placeholder Pages */}
         <Route
           path="/messages"
           element={
@@ -103,10 +150,10 @@ function App() {
           }
         />
         <Route
-          path="/performance"
+          path="/kpi"
           element={
             <Layout>
-              <Placeholder title="Performance Summary" />
+              <Placeholder title="KRA/KPI Page" />
             </Layout>
           }
         />

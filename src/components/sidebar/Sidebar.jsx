@@ -5,84 +5,64 @@ import {
   FaUserPlus,
   FaEnvelope,
   FaChartBar,
-  FaTachometerAlt
+  FaTachometerAlt,
+  FaTasks,
+  FaUsersCog,
+  FaClipboardList,
 } from 'react-icons/fa';
 import './Sidebar.css';
 
 export default function Sidebar() {
   const location = useLocation();
+  const path = location.pathname;
+
+  // Detect role based on path
+  const isManager = path.startsWith('/dashboard/manager') || path.startsWith('/tasks') || path.startsWith('/meetings');
+  const isEmployee = path.startsWith('/dashboard/employee');
+  const isHR = !isManager && !isEmployee;
+
+  // Sidebar links
+  const hrLinks = [
+    { to: '/dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
+    { to: '/calendar', label: 'Calendar', icon: <FaCalendarAlt /> },
+    { to: '/employees', label: 'Overall Employees', icon: <FaUserFriends /> },
+    { to: '/add-employee', label: 'Add New Employee', icon: <FaUserPlus /> },
+    { to: '/leave', label: 'Leave Management', icon: <FaCalendarAlt /> },
+    { to: '/messages', label: 'Messages from Employee', icon: <FaEnvelope /> },
+    { to: '/performance', label: 'View Performance', icon: <FaChartBar /> },
+  ];
+
+  const managerLinks = [
+    { to: '/dashboard/manager', label: 'Dashboard', icon: <FaTachometerAlt /> },
+    { to: '/tasks', label: 'Task Assign', icon: <FaTasks /> },
+    { to: '/leave', label: 'Leave Approvals', icon: <FaCalendarAlt /> },
+    { to: '/meetings', label: 'Meeting Planning', icon: <FaUsersCog /> },
+    { to: '/performance', label: 'Employee Performance', icon: <FaChartBar /> },
+  ];
+
+  const employeeLinks = [
+    { to: '/dashboard/employee', label: 'Dashboard', icon: <FaTachometerAlt /> },
+    { to: '/calendar', label: 'My Calendar', icon: <FaCalendarAlt /> },
+    { to: '/leave', label: 'My Leaves', icon: <FaClipboardList /> },
+    { to: '/performance', label: 'My Performance', icon: <FaChartBar /> },
+  ];
+
+  const links = isManager ? managerLinks : isEmployee ? employeeLinks : hrLinks;
 
   return (
     <aside className="main-sidebar">
       <div className="sidebar-title">WorkTrack</div>
       <nav className="nav-links">
-        <Link
-          to="/dashboard"
-          className={`nav-item ${
-            location.pathname === "/dashboard" ||
-            location.pathname === "/dashboard/manager" ||
-            location.pathname === "/dashboard/employee"
-              ? "active"
-              : ""
-          }`}
-        >
-          <FaTachometerAlt className="nav-icon" />
-          Dashboard
-        </Link>
-        <Link
-          to="/calendar"
-          className={`nav-item ${
-            location.pathname === "/calendar" ? "active" : ""
-          }`}
-        >
-          <FaCalendarAlt className="nav-icon" />
-          Calendar
-        </Link>
-        <Link
-          to="/employees"
-          className={`nav-item ${
-            location.pathname === "/employees" ? "active" : ""
-          }`}
-        >
-          <FaUserFriends className="nav-icon" />
-          Overall Employees
-        </Link>
-        <Link
-          to="/add-employee"
-          className={`nav-item ${
-            location.pathname === "/add-employee" ? "active" : ""
-          }`}
-        >
-          <FaUserPlus className="nav-icon" />
-          Add New Employee
-        </Link>
-        <Link
-          to="/leave"
-          className={`nav-item ${
-            location.pathname === "/leave" ? "active" : ""
-          }`}
-        >
-          <FaCalendarAlt className="nav-icon" />
-          Leave Management
-        </Link>
-        <Link
-          to="/messages"
-          className={`nav-item ${
-            location.pathname === "/messages" ? "active" : ""
-          }`}
-        >
-          <FaEnvelope className="nav-icon" />
-          Messages from Employee
-        </Link>
-        <Link
-          to="/performance"
-          className={`nav-item ${
-            location.pathname === "/performance" ? "active" : ""
-          }`}
-        >
-          <FaChartBar className="nav-icon" />
-          View Performance
-        </Link>
+        {links.map((link) => (
+          <Link
+            key={link.to}
+            to={link.to}
+            className={`nav-item ${location.pathname === link.to ? 'active' : ''}`}
+          >
+            {link.icon}
+            {link.label}
+          </Link>
+        ))}
       </nav>
     </aside>
   );
