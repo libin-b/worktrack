@@ -181,7 +181,7 @@ const AddEmployee = () => {
               />
             </div>
             
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>Status</label>
               <div className="radio-group">
                 <label className="radio-label">
@@ -204,8 +204,8 @@ const AddEmployee = () => {
                   />
                   <span className="radio-text">Inactive</span>
                 </label>
-              </div>
-            </div>
+              </div> */}
+            {/* </div> */}
           </div>
 
           <div className="form-actions">

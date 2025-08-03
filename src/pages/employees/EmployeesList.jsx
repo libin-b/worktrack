@@ -125,15 +125,15 @@ const EmployeesList = () => {
       sortable: true,
       sortFunction: (a, b) => new Date(a.joiningDate) - new Date(b.joiningDate),
     },
-    {
-      name: 'Status',
-      cell: row => (
-        <span className={`status-badge ${row.status.toLowerCase()}`}>
-          {row.status}
-        </span>
-      ),
-      sortable: true,
-    },
+    // {
+    //   name: 'Status',
+    //   cell: row => (
+    //     <span className={`status-badge ${row.status.toLowerCase()}`}>
+    //       {row.status}
+    //     </span>
+    //   ),
+    //   sortable: true,
+    // },
     {
       name: 'Actions',
       cell: row => (
