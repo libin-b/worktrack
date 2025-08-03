@@ -13,7 +13,7 @@ const AddEmployee = () => {
     selectRole: '',
     department: '',
     joiningDate: '',
-    status: 'Inactive'
+    status: 'active'
   });
 
   const departments = [
