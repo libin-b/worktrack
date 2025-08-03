@@ -12,6 +12,8 @@ import LeaveManagement from "./pages/leaves/LeaveManagement";
 import MeetingPlanning from "./pages/meetings/MeetingPlanning";
 import AssignShift from "./pages/shift/AssignShift";
 import ViewShift from "./pages/shift/ViewShift";
+import ViewTasks from "./pages/tasks/ViewTasks";
+import AssignTask from "./pages/tasks/AssignTask";
 
 // Placeholder for in-progress pages
 const Placeholder = ({ title }) => (
@@ -49,11 +51,20 @@ function App() {
         />
 
         {/* Manager Sub Pages (placeholders) */}
+        {/* Task Management */}
         <Route
           path="/tasks"
           element={
             <Layout>
-              <Placeholder title="Task Assignment" />
+              <ViewTasks />
+            </Layout>
+          }
+        />
+        <Route
+          path="/tasks/assign"
+          element={
+            <Layout>
+              <AssignTask />
             </Layout>
           }
         />

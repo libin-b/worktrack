@@ -110,6 +110,10 @@
   background-color: var(--fc-today-bg-color);
 }
 
+.fc-daygrid-event {
+  margin: 0!important;
+}
+
 .fc-event {
   border-radius: 4px;
   border: none;
@@ -201,13 +205,13 @@
   gap: 16px;
 }
 
-.form-row {  
+.event-form .form-row {  
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 4px !important;
 }
 
-.form-group {
+.event-form .form-group {
   flex: 1 0 calc(50% - 16px);
   margin-bottom: 16px;
   padding: 0 8px;
@@ -215,7 +219,7 @@
   box-sizing: border-box;
 }
 
-.form-label {
+.event-form .form-label {
   display: block;
   margin-bottom: 8px;
   font-weight: 500;

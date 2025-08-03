@@ -45,7 +45,7 @@ export default function Sidebar() {
   const managerLinks = [
     { to: '/dashboard/manager', label: 'Dashboard', icon: <FaTachometerAlt /> },
     { to: '/calendar', label: 'Calendar', icon: <FaCalendarAlt /> },
-    { to: '/tasks', label: 'Task Assign', icon: <FaTasks /> },
+    { to: '/tasks', label: 'Task Management', icon: <FaTasks /> },
     { to: '/shift', label: 'Shift Management', icon: <FaUsersCog /> },
     { to: '/leave', label: 'Leave Approvals', icon: <FaCalendarAlt /> },
     { to: '/meetings', label: 'Meeting Planning', icon: <FaUsersCog /> },
