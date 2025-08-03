@@ -13,7 +13,8 @@ const mockTasks = [
     task: 'Complete UI for Leave Module',
     deadline: '2023-07-15',
     status: 'Pending',
-    reason: 'Waiting for backend API'
+    priority: 'High',
+    description: 'Need to finalize the design and implement the frontend components.'
   },
   {
     id: 'TSK002',
@@ -21,7 +22,8 @@ const mockTasks = [
     task: 'Design meeting dashboard',
     deadline: '2023-07-10',
     status: 'Completed',
-    reason: ''
+    priority: 'Medium',
+    description: 'Design the layout and components for the meeting dashboard.'
   },
   {
     id: 'TSK003',
@@ -29,7 +31,8 @@ const mockTasks = [
     task: 'Update documentation',
     deadline: '2023-07-20',
     status: 'In Progress',
-    reason: 'Need clarification'
+    priority: 'Low',
+    description: 'Revise and update the project documentation.'
   },
   {
     id: 'TSK004',
@@ -37,7 +40,8 @@ const mockTasks = [
     task: 'Fix login issue',
     deadline: '2023-07-05',
     status: 'Completed',
-    reason: ''
+    priority: 'High',
+    description: 'Identify and fix the login issue in the application.'
   },
   {
     id: 'TSK005',
@@ -45,7 +49,8 @@ const mockTasks = [
     task: 'Performance optimization',
     deadline: '2023-07-25',
     status: 'Pending',
-    reason: 'Waiting for client feedback'
+    priority: 'Medium',
+    description: 'Optimize the performance of the application.'
   }
 ];
 
@@ -117,8 +122,14 @@ const ViewTasks = () => {
       sortable: true,
     },
     {
-      name: 'Reason',
-      selector: row => row.reason || '-',
+      name: 'Priority',
+      selector: row => row.priority,
+      sortable: true,
+    },
+    {
+      name: 'Description',
+      selector: row => row.description,
+      sortable: true,
       wrap: true,
     },
     {
