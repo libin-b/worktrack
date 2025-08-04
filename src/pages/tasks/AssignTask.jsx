@@ -38,11 +38,11 @@ const AssignTask = () => {
 
   // Mock employee data - in a real app, this would come from an API
   const employees = [
-    { id: 1, name: 'John Doe' },
-    { id: 2, name: 'Jane Smith' },
-    { id: 3, name: 'Robert Johnson' },
-    { id: 4, name: 'Emily Davis' },
-    { id: 5, name: 'Michael Brown' },
+    { id: 1, name: 'Thoufi' },
+    { id: 2, name: 'Libin' },
+    { id: 3, name: 'Disha' },
+    { id: 4, name: 'Gauro' },
+    { id: 5, name: 'kumar' },
   ];
 
   return (

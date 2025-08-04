@@ -55,7 +55,7 @@ Modal.setAppElement('#root');
 const mockLeaves = [
   {
     id: 'LV001',
-    employee: 'John Doe',
+    employee: 'Thoufi',
     leaveType: 'Annual Leave',
     fromDate: '2023-07-15',
     toDate: '2023-07-17',
@@ -65,7 +65,7 @@ const mockLeaves = [
   },
   {
     id: 'LV002',
-    employee: 'Jane Smith',
+    employee: 'Libin',
     leaveType: 'Sick Leave',
     fromDate: '2023-07-20',
     toDate: '2023-07-20',
@@ -75,7 +75,7 @@ const mockLeaves = [
   },
   {
     id: 'LV003',
-    employee: 'Robert Johnson',
+    employee: 'Disha',
     leaveType: 'Casual Leave',
     fromDate: '2023-07-25',
     toDate: '2023-07-26',
@@ -85,7 +85,7 @@ const mockLeaves = [
   },
   {
     id: 'LV004',
-    employee: 'Emily Davis',
+    employee: 'Gauro',
     leaveType: 'Work From Home',
     fromDate: '2023-08-01',
     toDate: '2023-08-01',
@@ -95,7 +95,7 @@ const mockLeaves = [
   },
   {
     id: 'LV005',
-    employee: 'Michael Brown',
+    employee: 'Kumar',
     leaveType: 'Annual Leave',
     fromDate: '2023-08-10',
     toDate: '2023-08-15',

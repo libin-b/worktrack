@@ -9,7 +9,7 @@ import './ViewShift.css';
 const mockShifts = [
   {
     id: 'SHF001',
-    employeeName: 'John Doe',
+    employeeName: 'kumar',
     shiftType: 'Morning',
     startDate: '2023-07-01',
     endDate: '2023-07-07',
@@ -17,7 +17,7 @@ const mockShifts = [
   },
   {
     id: 'SHF002',
-    employeeName: 'Jane Smith',
+    employeeName: 'Thoufi',
     shiftType: 'Evening',
     startDate: '2023-07-01',
     endDate: '2023-07-07',
@@ -25,7 +25,7 @@ const mockShifts = [
   },
   {
     id: 'SHF003',
-    employeeName: 'Robert Johnson',
+    employeeName: 'Libin',
     shiftType: 'Night',
     startDate: '2023-07-08',
     endDate: '2023-07-14',
@@ -33,7 +33,7 @@ const mockShifts = [
   },
   {
     id: 'SHF004',
-    employeeName: 'Emily Davis',
+    employeeName: 'Disha',
     shiftType: 'Morning',
     startDate: '2023-06-24',
     endDate: '2023-06-30',
@@ -41,7 +41,7 @@ const mockShifts = [
   },
   {
     id: 'SHF005',
-    employeeName: 'Michael Brown',
+    employeeName: 'Gauro',
     shiftType: 'Evening',
     startDate: '2023-06-24',
     endDate: '2023-06-30',

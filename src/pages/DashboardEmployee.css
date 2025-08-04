@@ -1,0 +1,78 @@
+.employee-dashboard {
+  padding: 24px;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.employee-dashboard h2 {
+  font-size: 26px;
+  color: #1f2937;
+  margin-bottom: 6px;
+}
+
+.employee-dashboard .role {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.dashboard-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.card {
+  flex: 1 1 300px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 20px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card h4 {
+  font-size: 18px;
+  color: #111827;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 14px;
+  color: #374151;
+  margin: 4px 0;
+}
+
+.meetings-section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.meetings-section h3 {
+  font-size: 20px;
+  color: #111827;
+  margin-bottom: 16px;
+}
+
+.meetings-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.meetings-section li {
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e7eb;
+  color: #374151;
+}
+
+.meetings-section li:last-child {
+  border-bottom: none;
+}

@@ -9,7 +9,7 @@ import './ViewTasks.css';
 const mockTasks = [
   {
     id: 'TSK001',
-    employeeName: 'John Doe',
+    employeeName: 'Thoufi',
     task: 'Complete UI for Leave Module',
     deadline: '2023-07-15',
     status: 'Pending',
@@ -18,7 +18,7 @@ const mockTasks = [
   },
   {
     id: 'TSK002',
-    employeeName: 'Jane Smith',
+    employeeName: 'Libin',
     task: 'Design meeting dashboard',
     deadline: '2023-07-10',
     status: 'Completed',
@@ -27,7 +27,7 @@ const mockTasks = [
   },
   {
     id: 'TSK003',
-    employeeName: 'Robert Johnson',
+    employeeName: 'Disha',
     task: 'Update documentation',
     deadline: '2023-07-20',
     status: 'In Progress',
@@ -36,7 +36,7 @@ const mockTasks = [
   },
   {
     id: 'TSK004',
-    employeeName: 'Emily Davis',
+    employeeName: 'Gauro',
     task: 'Fix login issue',
     deadline: '2023-07-05',
     status: 'Completed',
@@ -45,7 +45,7 @@ const mockTasks = [
   },
   {
     id: 'TSK005',
-    employeeName: 'Michael Brown',
+    employeeName: 'Kumar',
     task: 'Performance optimization',
     deadline: '2023-07-25',
     status: 'Pending',
