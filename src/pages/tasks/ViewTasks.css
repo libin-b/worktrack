@@ -111,9 +111,9 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
+  background-color: white;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
@@ -124,8 +124,11 @@
 }
 
 .filter-btn:hover {
-  background-color: var(--button-hover);
+  background-color: white;
+  color: #111827;
+  border-color: #111827;
 }
+
 
 .tasks-table-container {
   background: white;

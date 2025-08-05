@@ -22,6 +22,8 @@ import AssignShift from "./pages/shift/AssignShift";
 import ViewShift from "./pages/shift/ViewShift";
 import EmployeePerformance from "./pages/performance/EmployeePerformance";
 import TaskManagement from "./pages/tasks/TaskManagement";
+import ViewTasks from "./pages/tasks/ViewTasks";
+import AssignTask from "./pages/tasks/AssignTask";
 
 // Placeholder
 const Placeholder = ({ title }) => (
@@ -44,7 +46,8 @@ function App() {
         <Route path="/dashboard/employee" element={<Layout><DashboardEmployee /></Layout>} />
 
         {/* Manager Sub Pages */}
-        <Route path="/tasks" element={<Layout><TaskManagement /></Layout>} />
+        <Route path="/tasks" element={<Layout><ViewTasks /></Layout>} />
+        <Route path="/tasks/assign" element={<Layout><AssignTask /></Layout>} />
         <Route path="/meetings" element={<Layout><MeetingPlanning /></Layout>} />
         <Route path="/performance" element={<Layout><EmployeePerformance /></Layout>} />
 
