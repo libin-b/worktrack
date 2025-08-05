@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/common/Breadcrumb';
-import { FiSearch, FiCalendar, FiFilter, FiEdit, FiTrash2, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiSearch, FiCalendar, FiFilter, FiEdit, FiTrash2, FiChevronLeft, FiChevronRight, FiPlus } from 'react-icons/fi';
 import DataTable from 'react-data-table-component';
 import './ViewShift.css';
 
@@ -208,7 +208,7 @@ const ViewShift = () => {
           className="assign-shift-btn"
           onClick={handleAssignShift}
         >
-          Assign Shift
+          <FiPlus className="icon" /> Assign Shift
         </button>
       </div>
 
