@@ -24,6 +24,7 @@ import EmployeePerformance from "./pages/performance/EmployeePerformance";
 import TaskManagement from "./pages/tasks/TaskManagement";
 import ViewTasks from "./pages/tasks/ViewTasks";
 import AssignTask from "./pages/tasks/AssignTask";
+import Profile from "./pages/profile/Profile";
 
 // Placeholder
 const Placeholder = ({ title }) => (
@@ -48,6 +49,9 @@ function App() {
         {/* Manager Sub Pages */}
         <Route path="/tasks" element={<Layout><ViewTasks /></Layout>} />
         <Route path="/tasks/assign" element={<Layout><AssignTask /></Layout>} />
+        
+        {/* Profile */}
+        <Route path="/profile" element={<Layout><Profile /></Layout>} />
         <Route path="/meetings" element={<Layout><MeetingPlanning /></Layout>} />
         <Route path="/performance" element={<Layout><EmployeePerformance /></Layout>} />
 

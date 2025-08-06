@@ -50,8 +50,14 @@ export default function Topbar() {
     navigate('/'); // Assuming you have a navigate function to redirect to the login page
   };
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (e) => {
+    e.stopPropagation();
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleProfileClick = () => {
+    navigate('/profile');
+    setIsDropdownOpen(false);
   };
 
   const toggleNotification = () => {
@@ -189,33 +195,20 @@ export default function Topbar() {
           )}
         </div>
 
-        <div className="profile-wrapper" ref={dropdownRef}>
+        <div className={`profile-wrapper ${isDropdownOpen ? 'active' : ''}`} ref={dropdownRef}>
           <div className="profile-container" onClick={toggleDropdown}>
             <img src={userImage} alt="User" className="profile-img" />
-            {/* <FaChevronDown className={`dropdown-arrow ${isDropdownOpen ? 'rotate' : ''}`} /> */}
           </div>
-          
           {isDropdownOpen && (
             <div className="dropdown-menu">
-              <div className="dropdown-header">
-                <div className="user-info">
-                  <h4>John Doe</h4>
-                  <p>Admin</p>
-                </div>
-              </div>
-              {/* <div className="dropdown-divider"></div> */}
-              <div className="dropdown-item">
+              <div className="dropdown-item" onClick={handleProfileClick}>
                 <FaUserCog className="dropdown-icon" />
                 <span>Profile Settings</span>
               </div>
-              {/* <div className="dropdown-item">
-                <FaEnvelope className="dropdown-icon" />
-                <span>Newsletter Settings</span>
-              </div> */}
               <div className="dropdown-divider"></div>
               <div className="dropdown-item" onClick={handleLogout}>
                 <FaSignOutAlt className="dropdown-icon" />
-                <span>Log Out</span>
+                <span>Logout</span>
               </div>
             </div>
           )}
