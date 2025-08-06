@@ -101,7 +101,24 @@
   pointer-events: none;
 }
 
-.filter-btn, .assign-shift-btn {
+.filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: white;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 40px;
+  align-self: flex-end;
+}
+
+.assign-shift-btn {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -117,17 +134,14 @@
   height: 40px;
 }
 
-.assign-shift-btn {
-  background-color: var(--primary-color);
-  color: white;
-}
-
 .assign-shift-btn:hover {
   background-color: var(--button-hover);
 }
 
 .filter-btn:hover {
-  background-color: var(--button-hover);
+  background-color: white;
+  color: #111827;
+  border-color: #111827;
 }
 
 .shifts-table-container {
