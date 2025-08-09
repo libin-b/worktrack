@@ -1,91 +1,153 @@
 import React from "react";
 import "./DashboardEmployee.css";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+} from "chart.js";
+import { Doughnut, Bar } from "react-chartjs-2";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ChartDataLabels
+);
 
 const DashboardEmployee = () => {
-  // Sample data (in real apps, you would fetch this from backend)
-  const employeeName = " XYZ ";
+  const employeeName = "Mohamed Thoufeek";
   const role = "Frontend Developer";
 
-  const taskSummary = {
-    total: 12,
-    completed: 9,
-    pending: 3,
+  // Performance Speedometer
+  const performanceScore = 65; // completed %
+  const performanceData = {
+    labels: ["Completed", "Remaining"],
+    datasets: [
+      {
+        data: [performanceScore, 100 - performanceScore],
+        backgroundColor: ["#4ade80", "#e5e7eb"], // green & grey
+        borderWidth: 0,
+      },
+    ],
   };
 
-  const leaveStatus = {
-    applied: 5,
-    approved: 3,
-    rejected: 1,
-    pending: 1,
+  const performanceOptions = {
+    rotation: -90, // half circle start
+    circumference: 180, // half circle
+    cutout: "70%",
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: false },
+      datalabels: {
+        display: true,
+        formatter: (value, ctx) =>
+          ctx.dataIndex === 0 ? `${performanceScore}%` : "",
+        color: "#111",
+        font: { size: 18, weight: "bold" },
+      },
+    },
   };
 
-  const meetings = [
-    {
-      title: "Client Update",
-      date: "2025-08-05",
-      time: "10:30 AM",
-    },
-    {
-      title: "General Meeting",
-      date: "2025-08-07",
-      time: "3:00 PM",
-    },
+  // Leave Status Column Chart
+  const leaveData = {
+    labels: ["Applied", "Approved", "Rejected", "Pending"],
+    datasets: [
+      {
+        label: "Leave Count",
+        data: [5, 3, 1, 1],
+        backgroundColor: ["#3b82f6", "#22c55e", "#ef4444", "#f59e0b"],
+        borderRadius: 6,
+      },
+    ],
+  };
+
+  const leaveOptions = {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true } },
+  };
+
+  // Recently Received Tasks
+  const recentTasks = [
+    { title: "Update Landing Page", deadline: "2025-08-10", priority: "High" },
+    { title: "Fix Login Bug", deadline: "2025-08-12", priority: "Medium" },
   ];
 
-  const performance = {
-    errorFreeTasks: 10,
-    timelyQueries: 8,
-    saturdayWork: 3,
-    noLeaveDays: 15,
-  };
+  // Ongoing Tasks
+  const ongoingTasks = [
+    { title: "Client Portal Redesign", status: "In Progress" },
+    { title: "Performance Optimization", status: "Pending" },
+  ];
+
+  // Messages from Clients
+  const clientMessages = [
+    { client: "Acme Corp", message: "Great work on the new dashboard!" },
+    {
+      client: "Tech Solutions",
+      message: "Please check the issue on reports page.",
+    },
+  ];
 
   return (
     <div className="employee-dashboard">
       <h2>Welcome, {employeeName}</h2>
       <p className="role">Role: {role}</p>
 
-      {/* Task Summary */}
-      <div className="dashboard-cards">
-        <div className="card">
-          <h4>Tasks</h4>
-          <p>Total: {taskSummary.total}</p>
-          <p>Completed: {taskSummary.completed}</p>
-          <p>Pending: {taskSummary.pending}</p>
-        </div>
-
-        {/* Leave Status */}
-        <div className="card">
-          <h4>Leave Status</h4>
-          <p>Applied: {leaveStatus.applied}</p>
-          <p>Approved: {leaveStatus.approved}</p>
-          <p>Rejected: {leaveStatus.rejected}</p>
-          <p>Pending: {leaveStatus.pending}</p>
-        </div>
-
-        {/* Performance */}
-        <div className="card">
+      {/* Charts Section */}
+      <div className="charts-section">
+        <div className="chart-card">
           <h4>Performance</h4>
-          <p>Tasks without Errors: {performance.errorFreeTasks}</p>
-          <p>Client Queries on Time: {performance.timelyQueries}</p>
-          <p>Saturday Work Days: {performance.saturdayWork}</p>
-          <p>No Leave Days: {performance.noLeaveDays}</p>
+          <Doughnut data={performanceData} options={performanceOptions} />
+        </div>
+        <div className="chart-card">
+          <h4>Leave Status</h4>
+          <Bar data={leaveData} options={leaveOptions} />
         </div>
       </div>
 
-      {/* Upcoming Meetings */}
-      <div className="meetings-section">
-        <h3>Upcoming Meetings</h3>
-        {meetings.length === 0 ? (
-          <p>No upcoming meetings.</p>
-        ) : (
-          <ul>
-            {meetings.map((meet, index) => (
-              <li key={index}>
-                <strong>{meet.title}</strong> – {meet.date} at {meet.time}
-              </li>
-            ))}
-          </ul>
-        )}
+      {/* Recently Received Tasks */}
+      <div className="list-section">
+        <h3>Recently Received Tasks</h3>
+        <ul>
+          {recentTasks.map((task, index) => (
+            <li key={index}>
+              <strong>{task.title}</strong> – Deadline: {task.deadline} (
+              {task.priority})
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Ongoing Tasks */}
+      <div className="list-section">
+        <h3>Ongoing Tasks</h3>
+        <ul>
+          {ongoingTasks.map((task, index) => (
+            <li key={index}>
+              <strong>{task.title}</strong> – Status: {task.status}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Client Messages */}
+      <div className="list-section">
+        <h3>Messages from Clients</h3>
+        <ul>
+          {clientMessages.map((msg, index) => (
+            <li key={index}>
+              <strong>{msg.client}</strong>: {msg.message}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
