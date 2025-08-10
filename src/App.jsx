@@ -17,6 +17,7 @@ import CalendarPage from "./pages/calendar/CalendarPage";
 import AddEmployee from "./pages/employees/AddEmployee";
 import EmployeesList from "./pages/employees/EmployeesList";
 import LeaveManagement from "./pages/leaves/LeaveManagement";
+import LeaveHistory from "./pages/leaves/LeaveHistory";
 import MeetingPlanning from "./pages/meetings/MeetingPlanning";
 import AssignShift from "./pages/shift/AssignShift";
 import ViewShift from "./pages/shift/ViewShift";
@@ -25,6 +26,7 @@ import TaskManagement from "./pages/tasks/TaskManagement";
 import ViewTasks from "./pages/tasks/ViewTasks";
 import AssignTask from "./pages/tasks/AssignTask";
 import Profile from "./pages/profile/Profile";
+import Notifications from "./pages/notifications/Notifications";
 
 // Placeholder
 const Placeholder = ({ title }) => (
@@ -60,11 +62,17 @@ function App() {
         <Route path="/employees" element={<Layout><EmployeesList /></Layout>} />
         <Route path="/employees/add" element={<Layout><AddEmployee /></Layout>} />
         <Route path="/add-employee" element={<Layout><AddEmployee /></Layout>} />
+
+        {/* Leave Management */}
         <Route path="/leave" element={<Layout><LeaveManagement /></Layout>} />
+        <Route path="/leave-history" element={<Layout><LeaveHistory /></Layout>} />
 
         {/* Shift Management */}
         <Route path="/shift" element={<Layout><ViewShift /></Layout>} />
         <Route path="/shift/assign" element={<Layout><AssignShift /></Layout>} />
+
+        {/* Notifications */}
+        <Route path="/notifications" element={<Layout><Notifications /></Layout>} />
 
         {/* Misc / Placeholder Routes */}
         <Route path="/messages" element={<Layout><Placeholder title="Messages from Employees" /></Layout>} />

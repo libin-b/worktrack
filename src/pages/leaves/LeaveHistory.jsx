@@ -6,56 +6,11 @@ import DataTable from 'react-data-table-component';
 import './LeaveManagement.css';
 import Modal from 'react-modal';
 
-// Rejection Reason Modal Component
-const RejectModal = ({ isOpen, onClose, onConfirm, reason, onReasonChange }) => (
-  <Modal
-    isOpen={isOpen}
-    onRequestClose={onClose}
-    contentLabel="Reject Leave Request"
-    className="modal"
-    overlayClassName="modal-overlay"
-  >
-    <h2>Reject Leave Request</h2>
-    <div className="form-group">
-      <label htmlFor="rejectionReason">Reason for Rejection:</label>
-      <textarea
-        id="rejectionReason"
-        className="form-control"
-        rows="4"
-        value={reason}
-        onChange={(e) => onReasonChange(e.target.value)}
-        placeholder="Please provide a reason for rejecting this leave request"
-        required
-      />
-    </div>
-    <div className="modal-actions">
-      <button 
-        type="button"
-        className="btn btn-secondary" 
-        onClick={onClose}
-      >
-        Cancel
-      </button>
-      <button 
-        type="button"
-        className="btn btn-danger" 
-        onClick={onConfirm}
-        disabled={!reason.trim()}
-      >
-        Confirm Reject
-      </button>
-    </div>
-  </Modal>
-);
-
-// Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
-Modal.setAppElement('#root');
-
 // Mock data - in a real app, this would come from an API
 const mockLeaves = [
   {
     id: 'LV001',
-    employee: 'Thoufi',
+    employee: 'Employeee 1',
     leaveType: 'Annual Leave',
     fromDate: '2023-07-15',
     toDate: '2023-07-17',
@@ -65,7 +20,7 @@ const mockLeaves = [
   },
   {
     id: 'LV002',
-    employee: 'Libin',
+    employee: 'Employee1',
     leaveType: 'Sick Leave',
     fromDate: '2023-07-20',
     toDate: '2023-07-20',
@@ -75,37 +30,37 @@ const mockLeaves = [
   },
   {
     id: 'LV003',
-    employee: 'Disha',
+    employee: 'Employee1',
     leaveType: 'Casual Leave',
     fromDate: '2023-07-25',
     toDate: '2023-07-26',
     days: 2,
     reason: 'Personal work',
-    status: 'Rejected'
+    status: 'Approved'
   },
   {
     id: 'LV004',
-    employee: 'Gauro',
+    employee: 'Employee1',
     leaveType: 'Work From Home',
     fromDate: '2023-08-01',
     toDate: '2023-08-01',
     days: 1,
     reason: 'Home maintenance',
-    status: 'Pending'
+    status: 'Approved'
   },
   {
     id: 'LV005',
-    employee: 'Kumar',
+    employee: 'Employee1',
     leaveType: 'Annual Leave',
     fromDate: '2023-08-10',
     toDate: '2023-08-15',
     days: 5,
     reason: 'Summer vacation',
-    status: 'Pending'
+    status: 'Rejected'
   }
 ];
 
-const LeaveManagement = () => {
+const LeaveHistory = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -113,47 +68,14 @@ const LeaveManagement = () => {
   const [leaves, setLeaves] = useState(mockLeaves);
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
-  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
-  const [rejectionReason, setRejectionReason] = useState('');
-  const [selectedLeaveId, setSelectedLeaveId] = useState(null);
-
   const breadcrumbItems = [
     { label: 'Home', onClick: () => navigate('/') },
-    { label: 'Leave Management' }
+    { label: 'Leave History' }
   ];
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
     setCurrentPage(1);
-  };
-
-  const handleApprove = (leaveId) => {
-    setLeaves(leaves.map(leave => 
-      leave.id === leaveId ? { ...leave, status: 'Approved' } : leave
-    ));
-  };
-
-  const openRejectModal = (leaveId) => {
-    setSelectedLeaveId(leaveId);
-    setRejectionReason('');
-    setIsRejectModalOpen(true);
-  };
-
-  const closeRejectModal = () => {
-    setIsRejectModalOpen(false);
-    setSelectedLeaveId(null);
-    setRejectionReason('');
-  };
-
-  const handleReject = () => {
-    if (selectedLeaveId) {
-      setLeaves(leaves.map(leave => 
-        leave.id === selectedLeaveId 
-          ? { ...leave, status: 'Rejected', rejectionReason: rejectionReason } 
-          : leave
-      ));
-      closeRejectModal();
-    }
   };
 
   // Format date for display
@@ -166,12 +88,7 @@ const LeaveManagement = () => {
   // RejectModal component is now defined at the top of the file
 
   // Define columns for the data table
-  const columns = [
-    {
-      name: 'Employee',
-      selector: row => row.employee,
-      sortable: true,
-    },
+  const columns = [    
     {
       name: 'Leave Type',
       selector: row => row.leaveType,
@@ -218,43 +135,7 @@ const LeaveManagement = () => {
       ),
       sortable: false,
       minWidth: '200px',
-    },
-    {
-      name: 'Action',
-      cell: row => (
-        <div className="actions" style={{ overflow: 'visible' }}>
-          {row.status === 'Pending' ? (
-            <>
-              <button 
-                className="action-btn approve"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleApprove(row.id);
-                }}
-                title="Approve"
-              >
-                <FiCheck />
-              </button>
-              <button 
-                className="action-btn reject"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openRejectModal(row.id);
-                }}
-                title="Reject"
-              >
-                <FiX />
-              </button>
-            </>
-          ) : (
-            <span className="action-text">
-              {row.status === 'Approved' ? 'Approved' : 'Rejected'}
-            </span>
-          )}
-        </div>
-      ),
-      ignoreRowClick: true,      
-    },
+    }
   ];
 
   // Filter leaves based on search query and date range
@@ -321,7 +202,7 @@ const LeaveManagement = () => {
   return (
     <div className="view-container">
       <Breadcrumb items={breadcrumbItems} />
-      <h2>Leave Management</h2>
+      <h2>Leave History</h2>
       
       <div className="table-filter-container">
         <div className="search-input">
@@ -399,16 +280,8 @@ const LeaveManagement = () => {
         />
       </div>
       
-      {/* Reject Modal */}
-      <RejectModal 
-        isOpen={isRejectModalOpen}
-        onClose={closeRejectModal}
-        onConfirm={handleReject}
-        reason={rejectionReason}
-        onReasonChange={setRejectionReason}
-      />
     </div>
   );
 };
 
-export default LeaveManagement;
+export default LeaveHistory;

@@ -14,12 +14,8 @@ import './Sidebar.css';
 
 export default function Sidebar() {
   const location = useLocation();
-  // const path = location.pathname;
 
-  // Detect role based on path
-  // const isManager = path.startsWith('/dashboard/manager') || path.startsWith('/tasks') || path.startsWith('/meetings');
-  // const isEmployee = path.startsWith('/dashboard/employee');
-  // const isHR = !isManager && !isEmployee;
+  // Detect role 
   const userRole = localStorage.getItem('userRole');
 
   const isManager = userRole === 'manager';
@@ -55,7 +51,7 @@ export default function Sidebar() {
   const employeeLinks = [
     { to: '/dashboard/employee', label: 'Dashboard', icon: <FaTachometerAlt /> },
     { to: '/calendar', label: 'My Calendar', icon: <FaCalendarAlt /> },
-    { to: '/leave', label: 'My Leaves', icon: <FaClipboardList /> },
+    { to: '/leave-history', label: 'My Leaves', icon: <FaClipboardList /> },
     { to: '/performance', label: 'My Performance', icon: <FaChartBar /> },
   ];
 

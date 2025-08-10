@@ -3,6 +3,7 @@ import "./Topbar.css";
 import { FaBell, FaSearch, FaUserCog, FaEnvelope, FaSignOutAlt, FaChevronDown, FaCircle, FaRegBell, FaRegEnvelope, FaRegClock } from 'react-icons/fa';
 import userImage from '../../assets/images/user.png';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 // Mock notification data
 const mockNotifications = [
@@ -40,6 +41,7 @@ export default function Topbar() {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [notifications, setNotifications] = useState(mockNotifications);
   const [unreadCount, setUnreadCount] = useState(mockNotifications.filter(n => !n.read).length);
+  const isDashboard = useLocation().pathname.includes('/dashboard');
   const dropdownRef = useRef(null);
   const notificationRef = useRef(null);
   const navigate = useNavigate();
@@ -121,10 +123,12 @@ export default function Topbar() {
 
   return (
     <header className="topbar">
-      <div className="search-box">
-        <FaSearch className="search-icon" />
-        <input type="text" placeholder="Search" />
-      </div>
+      { isDashboard && (
+        <div className="search-box">
+          <FaSearch className="search-icon" />
+          <input type="text" placeholder="Search" />
+        </div>
+      )}
       <div className="topbar-right">
         <div className="notification-wrapper" ref={notificationRef}>
           <div 
@@ -184,8 +188,8 @@ export default function Topbar() {
                   className="view-all"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log('View all notifications');
                     setIsNotificationOpen(false);
+                    navigate('/notifications');
                   }}
                 >
                   View All Notifications
