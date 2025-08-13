@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/common/Breadcrumb';
-import { FiSearch, FiCalendar, FiFilter, FiChevronLeft, FiChevronRight, FiCheck, FiX } from 'react-icons/fi';
+import { FiSearch, FiCalendar, FiFilter, FiChevronLeft, FiChevronRight, FiPlus, FiX } from 'react-icons/fi';
 import DataTable from 'react-data-table-component';
 import './LeaveManagement.css';
 import Modal from 'react-modal';
@@ -76,6 +76,10 @@ const LeaveHistory = () => {
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
     setCurrentPage(1);
+  };
+
+  const handleAddNewLeaveClick = () => {
+    navigate('/calendar');
   };
 
   // Format date for display
@@ -202,8 +206,13 @@ const LeaveHistory = () => {
   return (
     <div className="view-container">
       <Breadcrumb items={breadcrumbItems} />
-      <h2>Leave History</h2>
-      
+      <div className="table-header">
+        <h2>Leave History</h2>
+        <button className="apply-leave-btn" onClick={handleAddNewLeaveClick}>
+          <FiPlus className="icon" /> Apply Leave
+        </button>
+      </div>
+
       <div className="table-filter-container">
         <div className="search-input">
           <FiSearch className="search-icon" />
@@ -214,7 +223,7 @@ const LeaveHistory = () => {
             onChange={handleSearch}
           />
         </div>
-        
+
         <div className="date-filters">
           <div className="date-filter">
             <span>From Date</span>
@@ -227,7 +236,7 @@ const LeaveHistory = () => {
               {/* <FiCalendar className="calendar-icon" /> */}
             </div>
           </div>
-          
+
           <div className="date-filter">
             <span>To Date</span>
             <div className="date-input">
@@ -239,14 +248,14 @@ const LeaveHistory = () => {
               {/* <FiCalendar className="calendar-icon" /> */}
             </div>
           </div>
-          
+
           <button className="filter-btn">
             <FiFilter />
             Filter
           </button>
         </div>
       </div>
-      
+
       <div className="employees-table-container">
         <DataTable
           columns={columns}
@@ -258,11 +267,11 @@ const LeaveHistory = () => {
           paginationTotalRows={filteredLeaves.length}
           paginationPerPage={rowsPerPage}
           paginationComponentOptions={{
-            rowsPerPageText: 'Rows per page:',
-            rangeSeparatorText: 'of',
+            rowsPerPageText: "Rows per page:",
+            rangeSeparatorText: "of",
             noRowsPerPage: false,
             selectAllRowsItem: false,
-            selectAllRowsItemText: 'All',
+            selectAllRowsItemText: "All",
           }}
           paginationIconNext={
             <span className="pagination-arrow">
@@ -279,7 +288,6 @@ const LeaveHistory = () => {
           pointerOnHover
         />
       </div>
-      
     </div>
   );
 };
