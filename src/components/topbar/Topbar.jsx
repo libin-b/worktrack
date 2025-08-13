@@ -123,12 +123,12 @@ export default function Topbar() {
 
   return (
     <header className="topbar">
-      { isDashboard && (
+      {/* { isDashboard && (
         <div className="search-box">
           <FaSearch className="search-icon" />
           <input type="text" placeholder="Search" />
         </div>
-      )}
+      )} */}
       <div className="topbar-right">
         <div className="notification-wrapper" ref={notificationRef}>
           <div 

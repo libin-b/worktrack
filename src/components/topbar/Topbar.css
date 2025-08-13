@@ -7,7 +7,7 @@
   gap: 5px;
   width: auto;
   height: 58px;
-  position: fixed;
+  position: absolute;
   top: 20px;
   right: 20px;
   z-index: 1000;

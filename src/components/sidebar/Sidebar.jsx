@@ -34,7 +34,7 @@ export default function Sidebar() {
     { to: '/employees', label: 'Overall Employees', icon: <FaUserFriends /> },
     { to: '/add-employee', label: 'Add New Employee', icon: <FaUserPlus /> },
     { to: '/leave', label: 'Leave Management', icon: <FaCalendarAlt /> },
-    { to: '/messages', label: 'Messages from Employee', icon: <FaEnvelope /> },
+    // { to: '/messages', label: 'Messages from Employee', icon: <FaEnvelope /> },
     { to: '/performance', label: 'View Performance', icon: <FaChartBar /> },
   ];
 

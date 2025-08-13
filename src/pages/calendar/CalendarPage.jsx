@@ -20,6 +20,10 @@ import "./CalendarPage.css";
 // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement("#root");
 
+// get role from local storage
+const userRole = localStorage.getItem("userRole");
+const isEmployee = userRole === "employee";
+
 const CalendarPage = () => {
   const [events, setEvents] = useState([
     {
@@ -52,6 +56,7 @@ const CalendarPage = () => {
       location: "",
       guests: [],
       label: "meeting",
+      leaveType: "", // Add leaveType here
     },
     backgroundColor: "#E0EAFF",
     borderColor: "#B2CCFF",
@@ -59,12 +64,12 @@ const CalendarPage = () => {
   });
 
   const calendarRef = useRef(null);
-  const labelColors = {
-    task: {
-      bg: "#E0EAFF",
-      text: "#3E4784",
-      border: "#B2CCFF",
-    },
+  const labelColors = !isEmployee ? {
+    // task: {
+    //   bg: "#E0EAFF",
+    //   text: "#3E4784",
+    //   border: "#B2CCFF",
+    // },
     meeting: {
       bg: "#FCE7F6",
       text: "#05603A",
@@ -75,11 +80,26 @@ const CalendarPage = () => {
       text: "#912018",
       border: "#FECDCA",
     },
-    blocker: {
-      bg: "#D1FADF",
-      text: "#9E165F",
-      border: "#A6F4C5",
+    // blocker: {
+    //   bg: "#D1FADF",
+    //   text: "#9E165F",
+    //   border: "#A6F4C5",
+    // },
+  } 
+  :
+  {    
+    leave: {
+      bg: "#FEE4E2",
+      text: "#912018",
+      border: "#FECDCA",
     },
+  };
+
+  const leaveTypes = {
+    sick: "Sick Leave",
+    vacation: "Vacation Leave",
+    casual: "Casual Leave",
+    maternity: "Maternity Leave",    
   };
 
   const breadcrumbItems = [
@@ -103,11 +123,12 @@ const CalendarPage = () => {
         description: "",
         location: "",
         guests: [],
-        label: "meeting",
+        label: isEmployee ? "leave" : "meeting",
+        leaveType: "", // Initialize leaveType
       },
-      backgroundColor: labelColors.meeting.bg,
-      borderColor: labelColors.meeting.border,
-      textColor: labelColors.meeting.text,
+      backgroundColor: labelColors[isEmployee ? "leave" : "meeting"].bg,
+      borderColor: labelColors[isEmployee ? "leave" : "meeting"].border,
+      textColor: labelColors[isEmployee ? "leave" : "meeting"].text,
     });
 
     setIsModalOpen(true);
@@ -194,12 +215,13 @@ const CalendarPage = () => {
         description: "",
         location: "",
         guests: [],
-        label: "meeting",
+        label: isEmployee ? "leave" : "meeting",
         url: "",
+        leaveType: "", // Initialize leaveType
       },
-      backgroundColor: labelColors.meeting.bg,
-      borderColor: labelColors.meeting.border,
-      textColor: labelColors.meeting.text,
+      backgroundColor: labelColors[isEmployee ? "leave" : "meeting"].bg,
+      borderColor: labelColors[isEmployee ? "leave" : "meeting"].border,
+      textColor: labelColors[isEmployee ? "leave" : "meeting"].text,
     });
 
     setIsModalOpen(true);
@@ -263,11 +285,11 @@ const CalendarPage = () => {
         description: "",
         location: "",
         guests: [],
-        label: "meeting",
+        label: isEmployee ? "leave" : "meeting",
       },
-      backgroundColor: labelColors.meeting.bg,
-      borderColor: labelColors.meeting.border,
-      textColor: labelColors.meeting.text,
+      backgroundColor: labelColors[isEmployee ? "leave" : "meeting"].bg,
+      borderColor: labelColors[isEmployee ? "leave" : "meeting"].border,
+      textColor: labelColors[isEmployee ? "leave" : "meeting"].text,
     });
   };
 
@@ -288,7 +310,7 @@ const CalendarPage = () => {
           }}
           customButtons={{
             addEventButton: {
-              text: "+ Add Event",
+              text: isEmployee ? "+ Apply Leave" : "+ Add Event",
               click: handleAddNewEventClick,
             },
           }}
@@ -332,7 +354,13 @@ const CalendarPage = () => {
         shouldCloseOnEsc={true}
       >
         <div className="modal-header">
-          <h2>{newEvent.id ? "Edit Event" : "Add New Event"}</h2>
+          <h2>
+            {isEmployee
+              ? newEvent.id ? "Edit Leave" : "Apply Leave"
+              : newEvent.id ? "Edit Event" : "Add New Event"
+            }
+          </h2>
+
           <button
             className="close-button"
             onClick={() => setIsModalOpen(false)}
@@ -345,24 +373,29 @@ const CalendarPage = () => {
         <div className="modal-body">
           <form className="event-form">
             <div className="form-row">
+              {newEvent.extendedProps.label !== "leave" && (
               <div className="form-group col-6">
                 <label className="form-label">Event Title</label>
                 <input
                   type="text"
                   name="title"
                   className="form-control"
-                  value={newEvent.title}
+                  value={ newEvent.extendedProps.label !== "leave" ? newEvent.title : "Leave Application"}
                   onChange={handleInputChange}
                   placeholder="Event Title"
                   autoFocus
                 />
               </div>
+              )}
               <div className="form-group">
                 <label className="form-label">Event Type</label>
                 <div className="select-wrapper">
                   <select
                     value={newEvent.extendedProps.label}
-                    onChange={(e) => handleLabelChange(e.target.value)}
+                    onChange={
+                      (e) => handleLabelChange(e.target.value)
+                      
+                    }
                     className="form-control"
                   >
                     {Object.entries(labelColors).map(([key]) => (
@@ -376,6 +409,35 @@ const CalendarPage = () => {
                   </select>
                 </div>
               </div>
+              
+              {newEvent.extendedProps.label == "leave" && (
+                <div className="form-group">
+                <label className="form-label">Leave Type</label>
+                <div className="select-wrapper">
+                  <select
+                    value={newEvent.extendedProps.leaveType}
+                    onChange={
+                      (e) => handleInputChange({
+                        target: {
+                          name: "extendedProps.leaveType",
+                          value: e.target.value,
+                        },
+                      })
+                    }
+                    className="form-control"
+                  >
+                    {Object.entries(leaveTypes).map(([key]) => (
+                      <option
+                        key={key}
+                        value={key}
+                      >                     
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              )}
             </div>
 
             <div className="form-row">
@@ -426,7 +488,39 @@ const CalendarPage = () => {
               </div>
             </div>
                       
+            {newEvent.extendedProps.label == "leave" ? (
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">No Of Days</label>
+                  <div className="input-with-icon">
+                    <input
+                      type="number"
+                      name="extendedProps.days"
+                      className="form-control"
+                      value={newEvent.extendedProps.days || ""}
+                      onChange={handleInputChange}
+                      placeholder="Add number of days"
+                    />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Reason</label>
+                  <div className="input-with-icon">
+                    <input
+                      type="text"
+                      name="extendedProps.reason"
+                      className="form-control"
+                      value={newEvent.extendedProps.reason || ""}
+                      onChange={handleInputChange}
+                      placeholder="Add reason"
+                    />
+                  </div>
+                </div>
+              </div>            
 
+            ):(
+            <>
             <div className="form-group">
               <label className="form-label">Meeting Link</label>
               <div className="input-with-icon">
@@ -470,6 +564,8 @@ const CalendarPage = () => {
                 />
               </div>
             </div>
+            </>
+            )}
           </form>
         </div>
 
@@ -510,8 +606,8 @@ const CalendarPage = () => {
   // Helper function to render event content with custom styling
   function renderEventContent(eventInfo) {
     const event = eventInfo.event;
-    const label = event.extendedProps.label || "meeting";
-    const color = labelColors[label] || labelColors.meeting;
+    const label = event.extendedProps.label || event.title || "meeting";
+    const color = labelColors[label] ||  labelColors.leave;
 
     return (
       <div
