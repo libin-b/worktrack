@@ -1,46 +1,52 @@
 import React, { useState } from 'react';
-import './Login.css';
 import { useNavigate } from 'react-router-dom';
+import './Login.css';
+import api from '../../api/axios'; 
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setError(''); // Clear previous errors
+    setError(null); // Clear previous errors
 
-    // Hardcoded credentials
-    const users = {
-      'hr@example.com': { password: 'hrpassword', role: 'hr' },
-      'manager@example.com': { password: 'managerpassword', role: 'manager' },
-      'employee@example.com': { password: 'employeepassword', role: 'employee' },
-    };
-
-    const user = users[email];
-
-    if (user && user.password === password) {
-      localStorage.setItem('userRole', user.role); // Save role to localStorage
-
-      // Redirect based on role
-      switch (user.role) {
-        case 'hr':
-          navigate('/dashboard');
-          break;
-        case 'manager':
-          navigate('/dashboard/manager');
-          break;
-        case 'employee':
-          navigate('/dashboard/employee');
-          break;
-        default:
-          setError('Unknown role.');
-      }
-    } else {
-      setError('Invalid email or password.');
+    if (!email || !password) {
+      setError('Please enter email and password.');
+      return;
     }
+    setLoading(true);
+
+    try {
+        // Send login request via axios
+        const response = await api.post('/auth/login', {email, password});
+        const {token, user} = response.data;
+        localStorage.setItem('auth_token', token); // Save token to localStorage
+        localStorage.setItem('auth_user', JSON.stringify(user)); // save user to localStorage
+
+        // role based route handling
+        const userRole = (user?.role || '').toString().toLowerCase();
+        
+        if (userRole === 'hr') {
+          navigate('/dashboard');
+        } else if (userRole === 'manager') {
+          navigate('/dashboard/manager');
+        } else if (userRole === 'employee') {
+          navigate('/dashboard/employee');
+        } else {
+          console.warn('Unknown role from backend:', user?.role);
+          navigate('/dashboard');
+        }
+    }catch(error){
+      // prefer server message if available
+      const msg = error?.response?.data?.message || 'Login failed';
+      setError(msg);
+    } finally {
+      setLoading(false);
+    } 
   };
 
   return (
