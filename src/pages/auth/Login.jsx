@@ -23,6 +23,7 @@ const Login = () => {
     try {
         // Send login request via axios
         const response = await api.post('/auth/login', {email, password});
+        console.log(response);
         const {token, user} = response.data;
         localStorage.setItem('auth_token', token); // Save token to localStorage
         localStorage.setItem('auth_user', JSON.stringify(user)); // save user to localStorage
@@ -42,7 +43,7 @@ const Login = () => {
         }
     }catch(error){
       // prefer server message if available
-      const msg = error?.response?.data?.message || 'Login failed';
+      const msg = error?.response?.data?.message || 'Login failed. Please try again.';
       setError(msg);
     } finally {
       setLoading(false);
@@ -56,6 +57,9 @@ const Login = () => {
         <p className="login-subtitle">Enter your email and password to sign in!</p>
 
         <form className="login-form" onSubmit={handleLogin}>
+          
+          {error && <p className="error-message">{error}</p>}   
+
           <div className="form-group">
             <label>Email*</label>
             <input 
@@ -76,9 +80,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-          </div>
-
-          {error && <p className="error-message">{error}</p>}
+          </div>     
 
           <div className="form-footer">
             <label className="remember">

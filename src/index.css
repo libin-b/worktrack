@@ -9,6 +9,7 @@
   --button-hover: #2c11a4;
   --link-color: #2563eb;
   --font-base: 'DM Sans', sans-serif;
+  --error-color: #ff4d4f;
 
   color-scheme: light;
   background-color: var(--bg-light);

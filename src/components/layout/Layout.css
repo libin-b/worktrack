@@ -8,4 +8,5 @@
   margin-left: 260px; 
   background-color: var(--bg-light);
   padding: 20px;
+  width: calc(100% - 260px);
 }
