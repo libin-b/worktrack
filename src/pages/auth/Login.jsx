@@ -23,14 +23,12 @@ const Login = () => {
     try {
         // Send login request via axios
         const response = await api.post('/auth/login', {email, password});
-        console.log(response);
-        const {token, user} = response.data;
+        // console.log(response);
+        const token = response.data.token;
+        const userRole = response.data.role.toString().toLowerCase();
         localStorage.setItem('auth_token', token); // Save token to localStorage
-        localStorage.setItem('auth_user', JSON.stringify(user)); // save user to localStorage
+        localStorage.setItem('user_role', JSON.stringify(userRole)); // save user role to localStorage
 
-        // role based route handling
-        const userRole = (user?.role || '').toString().toLowerCase();
-        
         if (userRole === 'hr') {
           navigate('/dashboard');
         } else if (userRole === 'manager') {
@@ -38,7 +36,7 @@ const Login = () => {
         } else if (userRole === 'employee') {
           navigate('/dashboard/employee');
         } else {
-          console.warn('Unknown role from backend:', user?.role);
+          console.warn('Unknown role from backend:', userRole);
           navigate('/dashboard');
         }
     }catch(error){

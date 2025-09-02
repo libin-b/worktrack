@@ -14,8 +14,11 @@ import DashboardEmployee from "./pages/DashboardEmployee";
 
 // Pages
 import CalendarPage from "./pages/calendar/CalendarPage";
+// Employee
 import AddEmployee from "./pages/employees/AddEmployee";
+import EditEmployee from "./pages/employees/EditEmployee";
 import EmployeesList from "./pages/employees/EmployeesList";
+
 import LeaveManagement from "./pages/leaves/LeaveManagement";
 import LeaveHistory from "./pages/leaves/LeaveHistory";
 import MeetingPlanning from "./pages/meetings/MeetingPlanning";
@@ -62,6 +65,7 @@ function App() {
         <Route path="/employees" element={<Layout><EmployeesList /></Layout>} />
         <Route path="/employees/add" element={<Layout><AddEmployee /></Layout>} />
         <Route path="/add-employee" element={<Layout><AddEmployee /></Layout>} />
+        <Route path="/employees/edit/:employeeId" element={<Layout><EditEmployee /></Layout>} />
 
         {/* Leave Management */}
         <Route path="/leave" element={<Layout><LeaveManagement /></Layout>} />

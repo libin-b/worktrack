@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { showSuccess, showError } from '../../components/common/SweetAlert';
 import Breadcrumb from '../../components/common/Breadcrumb';
 import './AddEmployee.css';
 import api from '../../api/axios';
 
-const AddEmployee = () => {
+const EditEmployee = () => {
+  const { employeeId } = useParams();
   const [departments, setDepartments] = useState([]);
   const [jobRoles, setJobRoles] = useState([]);
   const [formData, setFormData] = useState({
@@ -39,6 +40,29 @@ const AddEmployee = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if(employeeId) {
+      api.get(`/employees/${employeeId}`)
+        .then(response => {
+          setFormData({
+            employeeCode: response.data.employeeCode,
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            emailId: response.data.email,
+            contactNumber: response.data.phone,
+            selectJobRole: response.data.jobRoleId,
+            department: response.data.departmentId,
+            joiningDate: response.data.joinDate,
+            selectUserRole: response.data.userRole
+          });
+          console.log('Employee details fetched successfully:', response.data);
+        })
+        .catch(error => {
+        console.error('Error fetching employee details:', error);
+      });
+    }
+  }, [employeeId]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -61,15 +85,15 @@ const AddEmployee = () => {
       joinDate: formData.joiningDate,
       userRole: formData.selectUserRole
     };
-    api.post('/employees', payload)
+    api.put(`/employees/${employeeId}`, payload)
       .then(response => {
-        console.log('Employee added successfully:', response.data);
-        showSuccess('Success', 'Employee added successfully!');
+        console.log('Employee updated successfully:', response.data);
+        showSuccess('Success', 'Employee updated successfully!');
         navigate('/employees');
       })
       .catch(error => {
-        showError('Error', 'Failed to add employee.');
-        console.error('Error adding employee:', error);
+        showError('Error', 'Failed to update employee.');
+        console.error('Error updating employee:', error);
       });
   };
 
@@ -78,7 +102,7 @@ const AddEmployee = () => {
   const breadcrumbItems = [
     { label: 'Home', onClick: () => navigate('/') },
     { label: 'Employees', onClick: () => navigate('/employees') },
-    { label: 'Add Employees' }
+    { label: 'Edit Employee' }
   ];
 
   return (
@@ -86,7 +110,7 @@ const AddEmployee = () => {
       <Breadcrumb items={breadcrumbItems} />
 
       <div className="form-container">
-        <h2 className="form-title">Add New Employee</h2>
+        <h2 className="form-title">Edit Employee</h2>
         
         <form onSubmit={handleSubmit} className="employee-form">
           <div className="form-row">
@@ -240,4 +264,4 @@ const AddEmployee = () => {
   );
 };
 
-export default AddEmployee;
+export default EditEmployee;

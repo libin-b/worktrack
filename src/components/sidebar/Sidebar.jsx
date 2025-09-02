@@ -16,7 +16,7 @@ export default function Sidebar() {
   const location = useLocation();
 
   // Detect role 
-  const userRole = localStorage.getItem('userRole');
+  const userRole = localStorage.getItem('user_role');
 
   const isManager = userRole === 'manager';
   const isEmployee = userRole === 'employee';
