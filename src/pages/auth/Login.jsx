@@ -23,7 +23,7 @@ const Login = () => {
     try {
         // Send login request via axios
         const response = await api.post('/auth/login', {email, password});
-        // console.log(response);
+        console.log(response);
         const token = response.data.token;
         const userRole = response.data.role.toString().toLowerCase();
         localStorage.setItem('auth_token', token); // Save token to localStorage

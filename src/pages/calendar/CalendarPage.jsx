@@ -1,9 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, use } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import Modal from "react-modal";
+import Select from "react-select";
 import {
   FiX,
   FiPlus,
@@ -16,36 +17,22 @@ import {
 } from "react-icons/fi";
 import Breadcrumb from "../../components/common/Breadcrumb";
 import "./CalendarPage.css";
+import api from "../../api/axios";
+import { showError } from "../../components/common/SweetAlert";
 
-// Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
+// Make sure to bind modal to your appElement
 Modal.setAppElement("#root");
 
 // get role from local storage
-const userRole = localStorage.getItem("userRole");
+const userRole = localStorage.getItem("user_role").trim().toLowerCase();
 const isEmployee = userRole === "employee";
 
 const CalendarPage = () => {
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      title: "Team Meeting",
-      start: new Date(),
-      end: new Date(new Date().setHours(new Date().getHours() + 1)),
-      allDay: false,
-      extendedProps: {
-        description: "Weekly team sync",
-        location: "Conference Room A",
-        guests: ["john@example.com", "jane@example.com"],
-        label: "meeting",
-      },
-      backgroundColor: "#E0EAFF",
-      borderColor: "#B2CCFF",
-      textColor: "#3E4784",
-    },
-  ]);
-
+  const [leaveTypes, setLeaveTypes] = useState([]);
+  const [employees, setEmployees] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [events, setEvents] = useState([]);
   const [newEvent, setNewEvent] = useState({
     title: "",
     start: null,
@@ -65,11 +52,6 @@ const CalendarPage = () => {
 
   const calendarRef = useRef(null);
   const labelColors = !isEmployee ? {
-    // task: {
-    //   bg: "#E0EAFF",
-    //   text: "#3E4784",
-    //   border: "#B2CCFF",
-    // },
     meeting: {
       bg: "#FCE7F6",
       text: "#05603A",
@@ -80,11 +62,6 @@ const CalendarPage = () => {
       text: "#912018",
       border: "#FECDCA",
     },
-    // blocker: {
-    //   bg: "#D1FADF",
-    //   text: "#9E165F",
-    //   border: "#A6F4C5",
-    // },
   } 
   :
   {    
@@ -95,12 +72,38 @@ const CalendarPage = () => {
     },
   };
 
-  const leaveTypes = {
-    sick: "Sick Leave",
-    vacation: "Vacation Leave",
-    casual: "Casual Leave",
-    maternity: "Maternity Leave",    
+  const fetchLeaveTypes = () => {
+    // Fetch leave types from API
+    api.get('/leave-types')
+      .then(response => {
+        setLeaveTypes(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching leave types:", error);
+      });
   };
+
+  const fetchEmployees = () => {
+    // Fetch employees from API
+    api.get('/employees/simple')
+      .then(response => {
+        setEmployees(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching employees:", error);
+      });
+  };
+
+
+  useEffect(() => {
+    fetchLeaveTypes();
+    fetchEmployees();
+
+    // Fetch events from API
+    api.get("/calendar/events")
+      .then((res) => setEvents(res.data))
+      .catch((err) => console.error("Error fetching calendar events:", err));
+  }, []);
 
   const breadcrumbItems = [
     { label: "Home", path: "/" },
@@ -168,6 +171,7 @@ const CalendarPage = () => {
       )
     );
   };
+  
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -228,40 +232,40 @@ const CalendarPage = () => {
   };
 
   const handleAddEvent = () => {
-    const event = {
-      ...newEvent,
-      id: events.length > 0 ? Math.max(...events.map((e) => e.id)) + 1 : 1,
-      title: newEvent.title.trim(),
-      start: newEvent.start,
-      end: newEvent.end,
-      allDay: newEvent.allDay,
-      extendedProps: {
-        ...newEvent.extendedProps,
-        guests: Array.isArray(newEvent.extendedProps.guests)
-          ? newEvent.extendedProps.guests
-          : newEvent.extendedProps.guests
-              .split(",")
-              .map((g) => g.trim())
-              .filter(Boolean),
-      },
-      backgroundColor:
-        newEvent.backgroundColor ||
-        labelColors[newEvent.extendedProps.label].bg,
-      borderColor:
-        newEvent.borderColor ||
-        labelColors[newEvent.extendedProps.label].border,
-      textColor:
-        newEvent.textColor || labelColors[newEvent.extendedProps.label].text,
-    };
+    const payload = {
+    title: newEvent.title,
+    start: newEvent.start,
+    end: newEvent.end,
+    description: newEvent.extendedProps.description,
+    guestIds: newEvent.extendedProps.guests,
+    link: newEvent.extendedProps.url,
+    leaveType: newEvent.extendedProps.leaveType,
+    days: newEvent.extendedProps.days,
+    reason: newEvent.extendedProps.reason,
+  };
 
-    // If editing existing event, update it, otherwise add new event
-    const eventExists = events.some((e) => e.id === newEvent.id);
-
-    setEvents(
-      eventExists
-        ? events.map((e) => (e.id === newEvent.id ? event : e))
-        : [...events, event]
-    );
+  if (newEvent.extendedProps.label === "meeting") {
+    console.log(payload)
+    api.post("/meetings", payload)
+        .then(() => {
+          return api.get("/calendar/events");
+        })
+        .then((res) => setEvents(res.data))
+        .catch(err => console.error("Error saving meeting:", err));
+    } else if (newEvent.extendedProps.label === "leave") {      
+        console.log(userRole)
+      if(userRole == "hr"){
+        showError('Error', 'Only employees can apply for leave.');      
+        return;  
+      }else{
+        api.post("/leaves", payload)
+          .then(() => {
+            return api.get("/calendar/events");
+          })
+          .then((res) => setEvents(res.data))
+          .catch(err => console.error("Error applying leave:", err));
+      }
+    }
 
     setIsModalOpen(false);
     resetForm();
@@ -269,11 +273,50 @@ const CalendarPage = () => {
 
   const handleDeleteEvent = () => {
     if (newEvent.id) {
-      setEvents(events.filter((event) => event.id !== newEvent.id));
+      const url = newEvent.extendedProps.label === "meeting"
+        ? `/meetings/${newEvent.id}`
+        : `/leaves/${newEvent.id}`;
+
+      api.delete(url)
+        .then(() => {
+          return api.get("/calendar/events");
+        })
+        .then((res) => setEvents(res.data))
+        .catch(err => console.error("Error deleting event:", err));
+
       setIsModalOpen(false);
       resetForm();
     }
   };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    resetForm();
+  };
+
+  const calculateDays = (start, end) => {
+    if (!start || !end) return 0;
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const diffTime = endDate - startDate;
+    return Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; 
+  };
+
+
+  const handleDateChange = (field, value) => {
+    const updatedEvent = { ...newEvent, [field]: value };
+    const days = calculateDays(updatedEvent.start, updatedEvent.end);
+
+    setNewEvent({
+      ...updatedEvent,
+      extendedProps: {
+        ...updatedEvent.extendedProps,
+        days: days
+      }
+    });
+  };
+
+
 
   const resetForm = () => {
     setNewEvent({
@@ -346,7 +389,7 @@ const CalendarPage = () => {
       {/* Event Modal */}
       <Modal
         isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
+        onRequestClose={handleCloseModal}
         contentLabel="Event Details"
         className="modal event-modal"
         overlayClassName="modal-overlay"
@@ -356,14 +399,17 @@ const CalendarPage = () => {
         <div className="modal-header">
           <h2>
             {isEmployee
-              ? newEvent.id ? "Edit Leave" : "Apply Leave"
-              : newEvent.id ? "Edit Event" : "Add New Event"
-            }
+              ? newEvent.id
+                ? "Edit Leave"
+                : "Apply Leave"
+              : newEvent.id
+              ? "Edit Event"
+              : "Add New Event"}
           </h2>
 
           <button
             className="close-button"
-            onClick={() => setIsModalOpen(false)}
+            onClick={handleCloseModal}
             aria-label="Close"
           >
             <FiX size={24} />
@@ -374,69 +420,69 @@ const CalendarPage = () => {
           <form className="event-form">
             <div className="form-row">
               {newEvent.extendedProps.label !== "leave" && (
-              <div className="form-group col-6">
-                <label className="form-label">Event Title</label>
-                <input
-                  type="text"
-                  name="title"
-                  className="form-control"
-                  value={ newEvent.extendedProps.label !== "leave" ? newEvent.title : "Leave Application"}
-                  onChange={handleInputChange}
-                  placeholder="Event Title"
-                  autoFocus
-                />
-              </div>
+                <div className="form-group col-6">
+                  <label className="form-label">Event Title</label>
+                  <input
+                    type="text"
+                    name="title"
+                    className="form-control"
+                    value={
+                      newEvent.extendedProps.label !== "leave"
+                        ? newEvent.title
+                        : "Leave Application"
+                    }
+                    onChange={handleInputChange}
+                    placeholder="Event Title"
+                    autoFocus
+                  />
+                </div>
               )}
               <div className="form-group">
                 <label className="form-label">Event Type</label>
                 <div className="select-wrapper">
                   <select
                     value={newEvent.extendedProps.label}
-                    onChange={
-                      (e) => handleLabelChange(e.target.value)
-                      
-                    }
+                    onChange={(e) => handleLabelChange(e.target.value)}
                     className="form-control"
                   >
-                    {Object.entries(labelColors).map(([key]) => (
-                      <option
-                        key={key}
-                        value={key}
-                      >                     
+                    {Object.entries(labelColors).filter(([key]) => {
+                        // Only hide 'leave' for HR
+                        if (userRole === "hr" && key === "leave") return false;
+                        if (userRole === "employee" && key === "meeting") return false;
+                        return true;
+                      }).map(([key]) => (
+                      <option key={key} value={key}>
                         {key.charAt(0).toUpperCase() + key.slice(1)}
                       </option>
                     ))}
                   </select>
                 </div>
               </div>
-              
+
               {newEvent.extendedProps.label == "leave" && (
                 <div className="form-group">
-                <label className="form-label">Leave Type</label>
-                <div className="select-wrapper">
-                  <select
-                    value={newEvent.extendedProps.leaveType}
-                    onChange={
-                      (e) => handleInputChange({
-                        target: {
-                          name: "extendedProps.leaveType",
-                          value: e.target.value,
-                        },
-                      })
-                    }
-                    className="form-control"
-                  >
-                    {Object.entries(leaveTypes).map(([key]) => (
-                      <option
-                        key={key}
-                        value={key}
-                      >                     
-                        {key.charAt(0).toUpperCase() + key.slice(1)}
-                      </option>
-                    ))}
-                  </select>
+                  <label className="form-label">Leave Type</label>
+                  <div className="select-wrapper">
+                    <select
+                      value={newEvent.extendedProps.leaveType}
+                      onChange={(e) =>
+                        handleInputChange({
+                          target: {
+                            name: "extendedProps.leaveType",
+                            value: e.target.value,
+                          },
+                        })
+                      }
+                      className="form-control"
+                    >
+                      {leaveTypes.map((leaveType) => (
+                        <option key={leaveType.id} value={leaveType.id}>
+                          {leaveType.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
-              </div>
               )}
             </div>
 
@@ -451,16 +497,12 @@ const CalendarPage = () => {
                     className="form-control"
                     value={
                       newEvent.start
-                        ? newEvent.start.toISOString().slice(0, 16)
+                        ? newEvent.start.toLocaleString("sv-SE").replace(" ", "T")
                         : ""
                     }
-                    onChange={(e) =>
-                      setNewEvent({
-                        ...newEvent,
-                        start: new Date(e.target.value),
-                      })
-                    }
-                  />
+                      onChange={(e) =>handleDateChange("start", e.target.value)
+                      }
+                    />
                 </div>
               </div>
 
@@ -474,22 +516,17 @@ const CalendarPage = () => {
                     className="form-control"
                     value={
                       newEvent.end
-                        ? newEvent.end.toISOString().slice(0, 16)
+                        ? newEvent.end.toLocaleString("sv-SE").replace(" ", "T")
                         : ""
                     }
-                    onChange={(e) =>
-                      setNewEvent({
-                        ...newEvent,
-                        end: new Date(e.target.value),
-                      })
+                    onChange={(e) =>handleDateChange("end", e.target.value)
                     }
                   />
                 </div>
               </div>
             </div>
-                      
+
             {newEvent.extendedProps.label == "leave" ? (
-              
               <div className="form-row">
                 <div className="form-group">
                   <label className="form-label">No Of Days</label>
@@ -517,64 +554,77 @@ const CalendarPage = () => {
                     />
                   </div>
                 </div>
-              </div>            
-
-            ):(
-            <>
-            <div className="form-group">
-              <label className="form-label">Meeting Link</label>
-              <div className="input-with-icon">
-                {/* <FiLink className="input-icon" /> */}
-                <input
-                  type="url"
-                  name="extendedProps.url"
-                  className="form-control"
-                  value={newEvent.extendedProps.url || ""}
-                  onChange={handleInputChange}
-                  placeholder="Add a meeting link"
-                />
               </div>
-            </div>
+            ) : (
+              <>
+                <div className="form-group">
+                  <label className="form-label">Meeting Link</label>
+                  <div className="input-with-icon">
+                    {/* <FiLink className="input-icon" /> */}
+                    <input
+                      type="url"
+                      name="extendedProps.url"
+                      className="form-control"
+                      value={newEvent.extendedProps.url || ""}
+                      onChange={handleInputChange}
+                      placeholder="Add a meeting link"
+                    />
+                  </div>
+                </div>
 
-            <div className="form-group">
-              <label className="form-label">Guests</label>
-              <div className="input-with-icon">
-                {/* <FiUsers className="input-icon" /> */}
-                <input
-                  type="text"
-                  name="extendedProps.guests"
-                  className="form-control"
-                  value={newEvent.extendedProps.guests.join(", ") || ""}
-                  placeholder="Add guests (comma separated)"
-                />
-              </div>
-            </div>
+                <div className="form-group">
+                  <label className="form-label">Guests</label>
+                  <div className="input-with-icon">
+                    <Select
+                      isMulti
+                      options={employees.map((emp) => ({
+                        value: emp.id,
+                        label: emp.name,
+                      }))}
+                      value={employees
+                        .filter((emp) =>
+                          newEvent.extendedProps.guests?.includes(emp.id)
+                        )
+                        .map((emp) => ({ value: emp.id, label: emp.name }))}
+                      onChange={(selected) =>
+                        handleInputChange({
+                          target: {
+                            name: "extendedProps.guests",
+                            value: selected.map((s) => s.value), // store only IDs in state
+                          },
+                        })
+                      }
+                      className="react-select-container"
+                      classNamePrefix="react-select"
+                    />
+                  </div>
+                </div>
 
-            <div className="form-group">
-              <label className="form-label">Description</label>
-              <div className="input-with-icon">
-                {/* <FiAlignLeft className="input-icon" /> */}
-                <textarea
-                  name="extendedProps.description"
-                  className="form-control"
-                  rows={3}
-                  value={newEvent.extendedProps.description || ""}
-                  onChange={handleInputChange}
-                  placeholder="Add description"
-                />
-              </div>
-            </div>
-            </>
+                <div className="form-group">
+                  <label className="form-label">Description</label>
+                  <div className="input-with-icon">
+                    {/* <FiAlignLeft className="input-icon" /> */}
+                    <textarea
+                      name="extendedProps.description"
+                      className="form-control"
+                      rows={3}
+                      value={newEvent.extendedProps.description || ""}
+                      onChange={handleInputChange}
+                      placeholder="Add description"
+                    />
+                  </div>
+                </div>
+              </>
             )}
           </form>
         </div>
 
         <div className="modal-actions">
-          <div>            
+          <div>
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => setIsModalOpen(false)}
+              onClick={handleCloseModal}
             >
               Cancel
             </button>
@@ -593,7 +643,6 @@ const CalendarPage = () => {
               type="button"
               className="btn btn-primary"
               onClick={handleAddEvent}
-              disabled={!newEvent.title.trim()}
             >
               {newEvent.id ? "Update" : "Add"} Event
             </button>

@@ -261,11 +261,21 @@ input[type="date"],
   min-height: 40px;
 }
 
-.form-control:focus {
+.form-control:focus,
+.react-select__control--is-focused {
   outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(67, 24, 255, 0.1);
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 3px rgba(67, 24, 255, 0.1) !important;
 }
+
+.react-select-container {
+  width: 100% !important; 
+}
+
+.react-select__control {
+  width: 100% !important;
+}
+
 
 textarea.form-control {
   min-height: 100px;
