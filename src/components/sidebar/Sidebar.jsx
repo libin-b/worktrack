@@ -11,16 +11,11 @@ import {
   FaClipboardList,
 } from 'react-icons/fa';
 import './Sidebar.css';
+import { getUserRole } from '../../utils/userRole';
 
 export default function Sidebar() {
   const location = useLocation();
-
-  // Detect role 
-  const userRole = localStorage.getItem('user_role');
-
-  const isManager = userRole === 'manager';
-  const isEmployee = userRole === 'employee';
-  // const isHR = userRole === 'hr';
+  const { userRole, isEmployee, isManager } = getUserRole();
 
   if (!userRole) {
     return null; 
