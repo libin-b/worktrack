@@ -159,7 +159,7 @@
   color: #05A660;
 }
 
-.status-badge.in-progress {
+.status-badge.in_progress {
   background-color: #E1E9FF;
   color: #2D5BFF;
 }
@@ -197,6 +197,21 @@
 
 .action-btn.delete:hover {
   background-color: rgba(227, 26, 26, 0.1);
+}
+
+.action-btn.start {
+  color: #2D5BFF;
+}
+
+.action-btn.start:hover {
+  background-color: rgba(45, 91, 255, 0.1);
+}
+
+.action-btn.complete {
+  color: #05A660;
+}
+.action-btn.complete:hover {
+  background-color: rgba(5, 166, 96, 0.1);
 }
 
 /* No data message */

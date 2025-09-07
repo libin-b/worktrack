@@ -38,14 +38,16 @@ export default function Sidebar() {
     { to: '/calendar', label: 'Calendar', icon: <FaCalendarAlt /> },
     { to: '/tasks', label: 'Task Management', icon: <FaTasks /> },
     { to: '/shift', label: 'Shift Management', icon: <FaUsersCog /> },
-    { to: '/leave', label: 'Leave Approvals', icon: <FaCalendarAlt /> },
-    { to: '/meetings', label: 'Meeting Planning', icon: <FaUsersCog /> },
+    // { to: '/leave', label: 'Leave Approvals', icon: <FaCalendarAlt /> },
+    { to: '/leave-history', label: 'My Leaves', icon: <FaClipboardList /> },
+    // { to: '/meetings', label: 'Meeting Planning', icon: <FaUsersCog /> },
     { to: '/performance', label: 'Employee Performance', icon: <FaChartBar /> },
   ];
 
   const employeeLinks = [
     { to: '/dashboard/employee', label: 'Dashboard', icon: <FaTachometerAlt /> },
     { to: '/calendar', label: 'My Calendar', icon: <FaCalendarAlt /> },
+    { to: '/tasks/my-tasks', label: 'My Tasks', icon: <FaTasks /> },
     { to: '/leave-history', label: 'My Leaves', icon: <FaClipboardList /> },
     { to: '/performance', label: 'My Performance', icon: <FaChartBar /> },
   ];

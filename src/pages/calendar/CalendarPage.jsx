@@ -27,7 +27,6 @@ Modal.setAppElement("#root");
 const CalendarPage = () => {
   const { userRole, isEmployee, isManager } = getUserRole();
   const authUser = getAuthUser();
-  console.log(authUser);
   const [leaveTypes, setLeaveTypes] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);

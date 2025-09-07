@@ -27,6 +27,8 @@ import ViewShift from "./pages/shift/ViewShift";
 import EmployeePerformance from "./pages/performance/EmployeePerformance";
 import TaskManagement from "./pages/tasks/TaskManagement";
 import ViewTasks from "./pages/tasks/ViewTasks";
+import MyTasks from "./pages/tasks/MyTasks";
+import EditTask from "./pages/tasks/EditTask";
 import AssignTask from "./pages/tasks/AssignTask";
 import Profile from "./pages/profile/Profile";
 import Notifications from "./pages/notifications/Notifications";
@@ -51,17 +53,21 @@ function App() {
         <Route path="/dashboard/manager" element={<Layout><DashboardManager /></Layout>} />
         <Route path="/dashboard/employee" element={<Layout><DashboardEmployee /></Layout>} />
 
-        {/* Manager Sub Pages */}
+        {/* Tasks */}
         <Route path="/tasks" element={<Layout><ViewTasks /></Layout>} />
         <Route path="/tasks/assign" element={<Layout><AssignTask /></Layout>} />
+        <Route path="/tasks/edit/:taskId" element={<Layout><EditTask /></Layout>} />
+        <Route path="/tasks/my-tasks" element={<Layout><MyTasks /></Layout>} />
         
         {/* Profile */}
         <Route path="/profile" element={<Layout><Profile /></Layout>} />
         <Route path="/meetings" element={<Layout><MeetingPlanning /></Layout>} />
         <Route path="/performance" element={<Layout><EmployeePerformance /></Layout>} />
 
-        {/* HR Pages */}
+        {/* Calendar */}
         <Route path="/calendar" element={<Layout><CalendarPage /></Layout>} />
+
+        {/* Employees */}
         <Route path="/employees" element={<Layout><EmployeesList /></Layout>} />
         <Route path="/employees/add" element={<Layout><AddEmployee /></Layout>} />
         <Route path="/add-employee" element={<Layout><AddEmployee /></Layout>} />

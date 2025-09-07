@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Breadcrumb from "../../components/common/Breadcrumb";
 import "./AssignTask.css";
 import api from "../../api/axios";
 import { showError, showSuccess } from "../../components/common/SweetAlert";
 
-const AssignTask = () => {
+const EditTask = () => {
+  const { taskId } = useParams(); // get task id from URL
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    employeeName: "",
-    task: "",
+    assignedToId: "",
+    title: "",
     deadline: "",
     priority: "medium",
     description: "",
   });
 
-  const navigate = useNavigate();
   const [employees, setEmployees] = useState([]);
 
   const handleInputChange = (e) => {
@@ -25,6 +27,7 @@ const AssignTask = () => {
     }));
   };
 
+  // Fetch employees for dropdown
   useEffect(() => {
     api
       .get("/employees/simple-by-role?role=employee")
@@ -36,25 +39,45 @@ const AssignTask = () => {
       });
   }, []);
 
+  // Fetch task details
+  useEffect(() => {
+    if (taskId) {
+      api
+        .get(`/tasks/${taskId}`)
+        .then((response) => {
+          setFormData({
+            assignedToId: response.data.assignedToId || "",
+            title: response.data.title || "",
+            deadline: response.data.deadline ? response.data.deadline.split("T")[0] : "",
+            priority: response.data.priority || "medium",
+            description: response.data.description || "",
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching task:", error);
+          showError("Error", "Failed to load task details.");
+        });
+    }
+  }, [taskId]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     api
-      .post("/tasks", formData)
-      .then((response) => {
-        setEmployees(response.data);
-        showSuccess("Success", "Task assigned successfully!");
+      .put(`/tasks/${taskId}`, formData) 
+      .then(() => {
+        showSuccess("Success", "Task updated successfully!");
         navigate("/tasks");
       })
       .catch((error) => {
-        console.error("Error fetching employees:", error);
-        showError("Error", "Failed to assign task.");
+        console.error("Error updating task:", error);
+        showError("Error", "Failed to update task.");
       });
   };
 
   const breadcrumbItems = [
     { label: "Home", onClick: () => navigate("/") },
     { label: "Task Management", onClick: () => navigate("/tasks") },
-    { label: "Assign Task" },
+    { label: "Edit Task" },
   ];
 
   return (
@@ -62,7 +85,7 @@ const AssignTask = () => {
       <Breadcrumb items={breadcrumbItems} />
 
       <div className="form-container">
-        <h2 className="form-title">Assign New Task</h2>
+        <h2 className="form-title">Edit Task</h2>
 
         <form onSubmit={handleSubmit} className="form">
           <div className="form-row-2">
@@ -143,7 +166,7 @@ const AssignTask = () => {
 
           <div className="form-actions">
             <button type="submit" className="submit-btn">
-              Assign Task
+              Update Task
             </button>
           </div>
         </form>
@@ -152,4 +175,4 @@ const AssignTask = () => {
   );
 };
 
-export default AssignTask;
+export default EditTask;

@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/common/Breadcrumb";
-import { FiSearch, FiFilter, FiEdit, FiTrash2, FiPlus } from "react-icons/fi";
+import {
+  FiSearch,
+  FiFilter,
+  FiEdit,
+  FiTrash2,
+  FiPlus,
+  FiCheckCircle,
+  FiPlay,
+  FiMinus,
+  FiArrowDown,
+  FiArrowUp,
+} from "react-icons/fi";
 import DataTable from "react-data-table-component";
 import api from "../../api/axios";
 import "./ViewTasks.css";
@@ -19,13 +30,13 @@ const ViewTasks = () => {
 
   const breadcrumbItems = [
     { label: "Home", onClick: () => navigate("/") },
-    { label: "Task Management" },
+    { label: "My Tasks" },
   ];
 
   // Fetch tasks from API
   const fetchTasks = async (page = 1, fromDate, toDate) => {
     try {
-      const response = await api.get(`/tasks`, {
+      const response = await api.get(`/tasks/my-tasks`, {
         params: {
           page: page - 1,
           size: rowsPerPage,
@@ -50,29 +61,29 @@ const ViewTasks = () => {
     setCurrentPage(1);
   };
 
-  const handleEdit = (taskId) => {
-    navigate(`/tasks/edit/${taskId}`);
-  };
-
-  const handleDelete = async (taskId) => {
-    if (window.confirm("Are you sure you want to delete this task?")) {
-      try {
-        await api.delete(`/tasks/${taskId}`);
-        showSuccess("Success", "Task deleted successfully.");
-        fetchTasks(currentPage);
-      } catch (error) {
-        console.error("Error deleting task:", error);
-      }
+  const handleStartTask = async (taskId) => {
+    try {
+      await api.put(`/tasks/${taskId}/status?status=in_progress`);
+      showSuccess("Success", "Task started!");
+      fetchTasks(currentPage);
+    } catch (error) {
+      console.error("Error starting task:", error);
     }
   };
 
-  const handleAssignTask = () => {
-    navigate("/tasks/assign");
+  const handleCompleteTask = async (taskId) => {
+    try {
+      await api.put(`/tasks/${taskId}/status?status=completed`);
+      showSuccess("Success", "Task marked as completed!");
+      fetchTasks(currentPage);
+    } catch (error) {
+      console.error("Error completing task:", error);
+    }
   };
 
   const formatDate = (dateString) => {
     return dateString
-      ? new Date(dateString).toLocaleDateString("en-US", {
+      ? new Date(dateString).toLocaleDateString("en-In", {
           year: "numeric",
           month: "short",
           day: "numeric",
@@ -92,8 +103,6 @@ const ViewTasks = () => {
     );
   });
 
-  
-
   const columns = [
     { name: "Employee", selector: (row) => row.assignedToName, sortable: true },
     { name: "Task", selector: (row) => row.title, sortable: true, wrap: true },
@@ -109,30 +118,69 @@ const ViewTasks = () => {
       ),
       sortable: true,
     },
-    { name: "Priority", selector: (row) => row.priority, sortable: true },
+    {
+      name: "Priority",
+      cell: (row) => {
+        let color = "";
+        let icon = null;
+
+        switch (row.priority) {
+          case "low":
+            color = "green";
+            icon = <FiArrowDown />;
+            break;
+          case "medium":
+            color = "orange";
+            icon = <FiMinus />;
+            break;
+          case "high":
+            color = "red";
+            icon = <FiArrowUp />;
+            break;
+          default:
+            color = "gray";
+        }
+
+        return (
+          <span
+            style={{ color, display: "flex", alignItems: "center", gap: "4px" }}
+          >
+            {icon} {row.priority}
+          </span>
+        );
+      },
+      sortable: true,
+    },
     { name: "Description", selector: (row) => row.description, wrap: true },
     {
       name: "Actions",
       cell: (row) => (
         <div className="actions">
-          <button
-            className="action-btn edit"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleEdit(row.id);
-            }}
-          >
-            <FiEdit />
-          </button>
-          <button
-            className="action-btn delete"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDelete(row.id);
-            }}
-          >
-            <FiTrash2 />
-          </button>
+          {row.status === "pending" && (
+            <button
+              className="action-btn start"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleStartTask(row.id);
+              }}
+              title="Start Task"
+            >
+              <FiPlay />
+            </button>
+          )}
+
+          {row.status === "in_progress" && (
+            <button
+              className="action-btn complete"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCompleteTask(row.id);
+              }}
+              title="Mark as Completed"
+            >
+              <FiCheckCircle />
+            </button>
+          )}
         </div>
       ),
       ignoreRowClick: true,
@@ -146,10 +194,7 @@ const ViewTasks = () => {
       <Breadcrumb items={breadcrumbItems} />
 
       <div className="table-header">
-        <h2>Task Management</h2>
-        <button className="assign-task-btn" onClick={handleAssignTask}>
-          <FiPlus className="icon" /> Assign Task
-        </button>
+        <h2>My Tasks</h2>
       </div>
 
       <div className="table-filter-container">
@@ -206,6 +251,7 @@ const ViewTasks = () => {
           paginationPerPage={rowsPerPage}
           paginationDefaultPage={currentPage}
           paginationRowsPerPageOptions={[5, 10, 20, 50, 100, 200, 500, 1000]}
+          highlightOnHover
           onChangePage={(page) => fetchTasks(page)}
           noDataComponent={<div className="no-data">No tasks found</div>}
         />
