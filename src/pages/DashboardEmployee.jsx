@@ -1,153 +1,112 @@
 import React from "react";
 import "./DashboardEmployee.css";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-} from "chart.js";
-import { Doughnut, Bar } from "react-chartjs-2";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ChartDataLabels
-);
+import { FiCheckCircle, FiClock, FiClipboard, FiCalendar, FiCheck } from "react-icons/fi";
+import { useEffect, useState } from "react";
+import { getUserRole } from "../utils/userRole";
+import api from "../api/axios";
 
 const DashboardEmployee = () => {
-  const employeeName = "Mohamed Thoufeek";
-  const role = "Frontend Developer";
+  
+  // Stats
+  const [taskStats, setTaskStats] = useState({ pending: 0, inProgress: 0, completed: 0 });
+  const [recentTasks, setRecentTasks] = useState([]);
+  const role = getUserRole();
 
-  // Performance Speedometer
-  const performanceScore = 65; // completed %
-  const performanceData = {
-    labels: ["Completed", "Remaining"],
-    datasets: [
-      {
-        data: [performanceScore, 100 - performanceScore],
-        backgroundColor: ["#4ade80", "#e5e7eb"], // green & grey
-        borderWidth: 0,
-      },
-    ],
+  useEffect(() => {
+    // Fetch stats
+    api.get("/tasks/my-task-stats")
+      .then(res => setTaskStats(res.data))
+      .catch(err => console.error("Error fetching task stats:", err));
+
+    // Fetch recent tasks
+    api.get("tasks/my-tasks", { params: { page: 0, size: 5 } })
+      .then(res => setRecentTasks(res.data.content))
+      .catch(err => console.error("Error fetching recent tasks:", err));
+  }, []);
+  // const leaveStats = { applied: 5, approved: 3 };
+
+   const formatDate = (dateString) => {
+    return dateString
+      ? new Date(dateString).toLocaleDateString("en-In", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      : "-";
   };
-
-  const performanceOptions = {
-    rotation: -90, // half circle start
-    circumference: 180, // half circle
-    cutout: "70%",
-    plugins: {
-      legend: { display: false },
-      tooltip: { enabled: false },
-      datalabels: {
-        display: true,
-        formatter: (value, ctx) =>
-          ctx.dataIndex === 0 ? `${performanceScore}%` : "",
-        color: "#111",
-        font: { size: 18, weight: "bold" },
-      },
-    },
-  };
-
-  // Leave Status Column Chart
-  const leaveData = {
-    labels: ["Applied", "Approved", "Rejected", "Pending"],
-    datasets: [
-      {
-        label: "Leave Count",
-        data: [5, 3, 1, 1],
-        backgroundColor: ["#3b82f6", "#22c55e", "#ef4444", "#f59e0b"],
-        borderRadius: 6,
-      },
-    ],
-  };
-
-  const leaveOptions = {
-    responsive: true,
-    plugins: { legend: { display: false } },
-    scales: { y: { beginAtZero: true } },
-  };
-
-  // Recently Received Tasks
-  const recentTasks = [
-    { title: "Update Landing Page", deadline: "2025-08-10", priority: "High" },
-    { title: "Fix Login Bug", deadline: "2025-08-12", priority: "Medium" },
-  ];
-
-  // Ongoing Tasks
-  const ongoingTasks = [
-    { title: "Client Portal Redesign", status: "In Progress" },
-    { title: "Performance Optimization", status: "Pending" },
-  ];
-
-  // Messages from Clients
-  const clientMessages = [
-    { client: "Acme Corp", message: "Great work on the new dashboard!" },
-    {
-      client: "Tech Solutions",
-      message: "Please check the issue on reports page.",
-    },
-  ];
-
   return (
     <div className="employee-dashboard">
-      <h2>Welcome, {employeeName}</h2>
-      <p className="role">Role: {role}</p>
+      <h2>Dashboard</h2>
+      <p className="role"> {role.userRole}</p>
 
-      {/* Charts Section */}
-      <div className="charts-section">
-        <div className="chart-card">
-          <h4>Performance</h4>
-          <Doughnut data={performanceData} options={performanceOptions} />
+      {/* Task Stats cards */}
+      <div className="stats-cards">
+        <div className="stat-card">
+          <FiClipboard className="icon blue" />
+          <div>
+            <h4>{taskStats.pending}</h4>
+            <span>Pending Tasks</span>
+          </div>
         </div>
-        <div className="chart-card">
-          <h4>Leave Status</h4>
-          <Bar data={leaveData} options={leaveOptions} />
+        <div className="stat-card">
+          <FiClock className="icon orange" />
+          <div>
+            <h4>{taskStats.inProgress}</h4>
+            <span>In Progress</span>
+          </div>
+        </div>
+        <div className="stat-card">
+          <FiCheckCircle className="icon green" />
+          <div>
+            <h4>{taskStats.completed}</h4>
+            <span>Completed</span>
+          </div>
         </div>
       </div>
 
-      {/* Recently Received Tasks */}
-      <div className="list-section">
-        <h3>Recently Received Tasks</h3>
-        <ul>
-          {recentTasks.map((task, index) => (
-            <li key={index}>
-              <strong>{task.title}</strong> – Deadline: {task.deadline} (
-              {task.priority})
-            </li>
-          ))}
-        </ul>
-      </div>
+      {/* Leave stats */}
+      {/* <div className="stats-cards">
+        <div className="stat-card">
+          <FiCalendar className="icon blue" />
+          <div>
+            <h4>{leaveStats.applied}</h4>
+            <span>Leaves Applied</span>
+          </div>
+        </div>
+        <div className="stat-card">
+          <FiCheck className="icon green" />
+          <div>
+            <h4>{leaveStats.approved}</h4>
+            <span>Leaves Approved</span>
+          </div>
+        </div>
+      </div> */}
 
-      {/* Ongoing Tasks */}
+      {/* Recent Tasks Table */}
       <div className="list-section">
-        <h3>Ongoing Tasks</h3>
-        <ul>
-          {ongoingTasks.map((task, index) => (
-            <li key={index}>
-              <strong>{task.title}</strong> – Status: {task.status}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Client Messages */}
-      <div className="list-section">
-        <h3>Messages from Clients</h3>
-        <ul>
-          {clientMessages.map((msg, index) => (
-            <li key={index}>
-              <strong>{msg.client}</strong>: {msg.message}
-            </li>
-          ))}
-        </ul>
+        <h3>Recent Tasks</h3>
+        <table className="recent-tasks-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Deadline</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody>
+            {recentTasks.map((task, idx) => (
+              <tr key={idx}>
+                <td>{task.title}</td>
+                <td>{formatDate(task.deadline)}</td>
+                <td>
+                  <span className={`priority-badge ${task.priority.toLowerCase()}`}>
+                    {task.priority}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

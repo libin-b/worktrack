@@ -243,8 +243,8 @@ const LeaveManagement = () => {
         (leave.employee?.firstName + " " + leave.employee?.lastName)
           .toLowerCase()
           .includes(searchQuery.toLowerCase()) ||
-        leave.leaveType.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        leave.reason.toLowerCase().includes(searchQuery.toLowerCase());
+        leave?.leaveType.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        leave?.reason.toLowerCase().includes(searchQuery.toLowerCase());
 
       const fromDateFilter = fromDate
         ? new Date(leave.fromDate) >= new Date(fromDate)

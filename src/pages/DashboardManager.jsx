@@ -1,90 +1,115 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./DashboardManager.css";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { FiUsers, FiClipboard, FiCheck } from "react-icons/fi";
+import api from "../api/axios";
 
 const DashboardManager = () => {
-  const performanceData = [
-    { name: "Thoufi", value: 40 },
-    { name: "Libin", value: 30 },
-    { name: "Gauro", value: 20 },
-    { name: "Disha", value: 10 },
-  ];
+  const [stats, setStats] = useState({
+    employees: 0,
+    tasks: { total: 0, pending: 0, completed: 0 },
+  });
+  const [highPriorityTasks, setHighPriorityTasks] = useState([]);
 
-  const COLORS = ["#00C49F", "#FFBB28", "#FF8042", "#0088FE"];
+  useEffect(() => {
+    fetchStats();
+    fetchHighPriorityTasks();
+  }, []);
 
-  const queries = [
-    { id: 1, client: "Amazon", query: "Need update on project A" },
-    { id: 2, client: "H&M", query: "Still getting the same Bug" },
-    { id: 3, client: "walmart", query: "Add new feature request" },
-    { id: 3, client: "Zoho", query: "waiting for final output" },
-  ];
+  const fetchStats = async () => {
+    try {
+      const res = await api.get("/manager/stats");
+      setStats(res.data);
+    } catch (err) {
+      console.error("Error fetching stats", err);
+    }
+  };
+
+  const fetchHighPriorityTasks = async () => {
+    try {
+      const res = await api.get("/tasks");
+      const filteredTasks = res.data.content.filter(
+        (task) => task.priority === "high" && task.status !== "completed"
+      );
+      setHighPriorityTasks(filteredTasks);
+    } catch (err) {
+      console.error("Error fetching high-priority tasks", err);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    return dateString
+      ? new Date(dateString).toLocaleDateString("en-IN", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      : "-";
+  };
 
   return (
     <div className="manager-dashboard">
-      <h1>Welcome, Manager!</h1>
+      <h2>Manager Dashboard</h2>
 
-      {/* Top Performer Chart */}
-      <div className="chart-box">
-        <h3>Top Performer Analysis</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Pie
-              data={performanceData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              label
-            >
-              {performanceData.map((entry, index) => (
-                <Cell key={index} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
+      {/* Stats Cards */}
+      <div className="hr-stats">
+        <div className="hr-stat-card">
+          <FiUsers className="hr-icon blue" />
+          <div>
+            <h4>{stats.employees}</h4>
+            <span>Total Employees</span>
+          </div>
+        </div>
+
+        <div className="hr-stat-card">
+          <FiClipboard className="hr-icon orange" />
+          <div>
+            <h4>
+              {stats.tasks?.pending || 0} / {stats.tasks?.total || 0}
+            </h4>
+            <span>Pending Tasks</span>
+          </div>
+        </div>
+
+        <div className="hr-stat-card">
+          <FiCheck className="hr-icon green" />
+          <div>
+            <h4>{stats.tasks?.completed || 0}</h4>
+            <span>Completed Tasks</span>
+          </div>
+        </div>
       </div>
 
-      {/* Client Queries Table */}
-      <div className="queries-section">
-        <h3>Client Queries</h3>
-        <table className="queries-table">
+      {/* High-Priority Pending Tasks Table */}
+      <div className="high-priority-tasks">
+        <h3>High-Priority Pending Tasks</h3>
+        <table className="high-priority-task-table">
           <thead>
             <tr>
-              <th>Client</th>
-              <th>Query</th>
-              <th>Assign To</th>
-              <th>Action</th>
+              <th>Title</th>
+              <th>Assigned To</th>
+              <th>Status</th>
+              <th>Deadline</th>
             </tr>
           </thead>
           <tbody>
-            {queries.map((q) => (
-              <tr key={q.id}>
-                <td>{q.client}</td>
-                <td>{q.query}</td>
-                <td>
-                  <select>
-                    <option>Select Employee</option>
-                    <option>Thoufi</option>
-                    <option>libin</option>
-                    <option>Gauro</option>
-                    <option>Disha</option>
-                  </select>
-                </td>
-                <td>
-                  <button>Assign</button>
+            {highPriorityTasks.length > 0 ? (
+              highPriorityTasks.map((task) => (
+                <tr key={task.id}>
+                  <td>{task.title}</td>
+                  <td>{task.assignedToName || "-"}</td>
+                  <td className={`status-badge ${task.status.toLowerCase()}`}>
+                    {task.status}
+                  </td>
+                  <td>{formatDate(task.deadline)}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="no-tasks">
+                  No high-priority pending tasks
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

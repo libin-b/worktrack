@@ -1,86 +1,156 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import "./DashboardHR.css";
 import {
-  PieChart, Pie, Cell, Tooltip,
-  BarChart, Bar, XAxis, YAxis,
-  CartesianGrid, Legend, ResponsiveContainer
-} from 'recharts';
-import './DashboardHR.css';
-import { useNavigate } from 'react-router-dom';
+  FiUsers,
+  FiBriefcase,
+  FiCheck,
+  FiX,
+  FiDatabase,
+  FiBarChart,
+  FiClipboard,
+} from "react-icons/fi";
+import api from "../api/axios";
+import { showSuccess, showError } from "../components/common/SweetAlert";
 
 const DashboardHR = () => {
-  const navigate = useNavigate();
+  const [pendingLeaves, setPendingLeaves] = useState([]);
+  const [stats, setStats] = useState({ employees: 0, departments: 0 });
 
-  // Sample data for pie chart
-  const teamData = [
-    { name: 'Development', value: 15 },
-    { name: 'Design', value: 10 },
-    { name: 'QA', value: 5 },
-    { name: 'HR', value: 3 },
-  ];
+  useEffect(() => {
+    fetchStats();
+    fetchPendingLeaves();
+  }, []);
 
-  // Sample data for bar chart
-  const leaveData = [
-    { team: 'Development', leaves: 8 },
-    { team: 'Design', leaves: 4 },
-    { team: 'QA', leaves: 3 },
-    { team: 'HR', leaves: 2 },
-  ];
+  const fetchStats = async () => {
+    try {
+      const res = await api.get("/hr/stats");
+      setStats(res.data);
+    } catch (err) {
+      console.error("Error fetching stats", err);
+    }
+  };
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const fetchPendingLeaves = async () => {
+    try {
+      const res = await api.get("/leaves");
+      const filteredLeaves = res.data.filter(
+        (leave) => leave.status === "pending"
+      );
+      setPendingLeaves(filteredLeaves);
+    } catch (err) {
+      console.error("Error fetching pending leaves", err);
+    }
+  };
 
-  const handleCalendarClick = () => {
-    navigate('/calendar');
+  const handleApprove = async (id) => {
+    try {
+      await api.put(`/leaves/${id}/approve`);
+      showSuccess("Approved", "Leave request approved");
+      fetchPendingLeaves();
+    } catch (err) {
+      showError("Error", "Failed to approve request");
+    }
+  };
+
+  const handleReject = async (id) => {
+    try {
+      await api.put(`/leaves/${id}/reject`);
+      showSuccess("Rejected", "Leave request rejected");
+      fetchPendingLeaves();
+    } catch (err) {
+      showError("Error", "Failed to reject request");
+    }
+  };
+
+  const formatDate = (dateString) => {
+    return dateString
+      ? new Date(dateString).toLocaleDateString("en-In", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      : "-";
   };
 
   return (
     <div className="hr-dashboard">
-      <h1>Welcome, HR!</h1>
-      <p>This is our HR dashboard — we will enhance it with more features soon.</p>
+      <h2>HR Dashboard</h2>
 
-      <div className="dashboard-cards">
-        <div className="card clickable" onClick={handleCalendarClick}>
-          <h3>📅 Calendar</h3>
-          <p>View tasks, leaves & shift plans</p>
+      {/* Stats cards */}
+      <div className="hr-stats">
+        <div className="hr-stat-card">
+          <FiUsers className="hr-icon blue" />
+          <div>
+            <h4>{stats.employees}</h4>
+            <span>Total Employees</span>
+          </div>
+        </div>
+
+        <div className="hr-stat-card">
+          <FiBriefcase className="hr-icon green" />
+          <div>
+            <h4>{stats.departments}</h4>
+            <span>Total Departments</span>
+          </div>
+        </div>
+
+        <div className="hr-stat-card">
+          <FiClipboard className="hr-icon orange" />
+          <div>
+            <h4>
+              {stats.tasks?.pending || 0} / {stats.tasks?.total || 0}
+            </h4>
+            <span>Pending Tasks</span>
+          </div>
         </div>
       </div>
 
-      <div className="chart-section">
-        <div className="chart-box">
-          <h3>Team Distribution</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={teamData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                fill="#8884d8"
-                label
-              >
-                {teamData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="chart-box">
-          <h3>Team-wise Leave Count</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={leaveData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="team" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="leaves" fill="#82ca9d" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+      {/* Pending Leave Requests */}
+      <div className="pending-leaves">
+        <h3>Pending Leave Requests</h3>
+        <table className="pending-leave-table">
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Days</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pendingLeaves.length > 0 ? (
+              pendingLeaves.map((leave) => (
+                <tr key={leave.id}>
+                  <td>{leave.employee.name}</td>
+                  <td>{formatDate(leave.fromDate)}</td>
+                  <td>{formatDate(leave.toDate)}</td>
+                  <td>{leave.days}</td>
+                  <td className="actions">
+                    <button
+                      className="action-btn approve-btn"
+                      onClick={() => handleApprove(leave.id)}
+                    >
+                      <FiCheck />
+                    </button>
+                    <button
+                      className="action-btn reject-btn"
+                      onClick={() => handleReject(leave.id)}
+                    >
+                      <FiX />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="no-requests">
+                  No pending requests
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

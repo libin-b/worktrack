@@ -48,7 +48,13 @@ export default function Topbar() {
 
   const handleLogout = () => {
     // Handle logout logic here
-    console.log('User logged out');
+    
+    localStorage.removeItem("auth_token");
+    sessionStorage.removeItem("auth_token");
+    
+    localStorage.removeItem("user_role");
+    sessionStorage.removeItem("user_role");
+    // console.log('User logged out');
     navigate('/'); // Assuming you have a navigate function to redirect to the login page
   };
 
