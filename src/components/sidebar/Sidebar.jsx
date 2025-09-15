@@ -30,14 +30,14 @@ export default function Sidebar() {
     { to: '/add-employee', label: 'Add New Employee', icon: <FaUserPlus /> },
     { to: '/leave', label: 'Leave Management', icon: <FaCalendarAlt /> },
     // { to: '/messages', label: 'Messages from Employee', icon: <FaEnvelope /> },
-    // { to: '/performance', label: 'View Performance', icon: <FaChartBar /> },
+    { to: '/performance', label: 'View Performance', icon: <FaChartBar /> },
   ];
 
   const managerLinks = [
     { to: '/dashboard/manager', label: 'Dashboard', icon: <FaTachometerAlt /> },
     { to: '/calendar', label: 'Calendar', icon: <FaCalendarAlt /> },
     { to: '/tasks', label: 'Task Management', icon: <FaTasks /> },
-    // { to: '/shift', label: 'Shift Management', icon: <FaUsersCog /> },
+    { to: '/shift', label: 'Shift Management', icon: <FaUsersCog /> },
     // { to: '/leave', label: 'Leave Approvals', icon: <FaCalendarAlt /> },
     { to: '/leave-history', label: 'My Leaves', icon: <FaClipboardList /> },
     // { to: '/meetings', label: 'Meeting Planning', icon: <FaUsersCog /> },
