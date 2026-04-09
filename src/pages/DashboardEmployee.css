@@ -1,0 +1,79 @@
+.employee-dashboard {
+  padding: 20px;
+}
+
+.employee-dashboard .role {
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+/* Stats */
+.employee-dashboard .stats-cards {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.employee-dashboard .stat-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.employee-dashboard .stat-card .icon {
+  font-size: 24px;
+}
+.employee-dashboard .stat-card .icon.blue {
+  color: #3b82f6;
+}
+.employee-dashboard .stat-card .icon.orange {
+  color: #f59e0b;
+}
+.employee-dashboard .stat-card .icon.green {
+  color: #22c55e;
+}
+
+/* Table */
+.employee-dashboard .recent-tasks-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.employee-dashboard .recent-tasks-table th,
+.employee-dashboard .recent-tasks-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+.employee-dashboard .recent-tasks-table th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+
+/* Priority badges */
+.employee-dashboard .priority-badge {
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.employee-dashboard .priority-badge.high {
+  background: #fee2e2;
+  color: #ef4444;
+}
+.employee-dashboard .priority-badge.medium {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+.employee-dashboard .priority-badge.low {
+  background: #dcfce7;
+  color: #22c55e;
+}

@@ -1,0 +1,66 @@
+:root {
+  --primary-color: #4318FF;
+  --primary-text-color: #2B3674;
+  --secondary-text-color: #7A88AF;
+  --input-text-color: #49526a;
+  --bg-light: #f4f7fe;
+  --bg-white: #ffffff;
+  --input-border: #e0e5f2;
+  --button-hover: #2c11a4;
+  --link-color: #2563eb;
+  --font-base: 'DM Sans', sans-serif;
+  --error-color: #ff4d4f;
+
+  color-scheme: light;
+  background-color: var(--bg-light);
+  color: var(--primary-text-color);
+  font-family: var(--font-base);
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* Base resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: var(--font-base);
+  background-color: var(--bg-light);
+  color: var(--primary-text-color);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--primary-text-color);
+  font-family: var(--font-base);
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Button styling */
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: var(--font-base);
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+button:hover {
+  background-color: #2a1ac4; /* darker variant */
+}

@@ -1,0 +1,95 @@
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Auth
+import Login from "./pages/auth/Login";
+
+// Layout
+import Layout from "./components/layout/Layout";
+
+// Dashboards
+import DashboardHR from "./pages/DashboardHR";
+import DashboardManager from "./pages/DashboardManager";
+import DashboardEmployee from "./pages/DashboardEmployee";
+
+// Pages
+import CalendarPage from "./pages/calendar/CalendarPage";
+// Employee
+import AddEmployee from "./pages/employees/AddEmployee";
+import EditEmployee from "./pages/employees/EditEmployee";
+import EmployeesList from "./pages/employees/EmployeesList";
+
+import LeaveManagement from "./pages/leaves/LeaveManagement";
+import LeaveHistory from "./pages/leaves/LeaveHistory";
+import MeetingPlanning from "./pages/meetings/MeetingPlanning";
+import AssignShift from "./pages/shift/AssignShift";
+import ViewShift from "./pages/shift/ViewShift";
+import EmployeePerformance from "./pages/performance/EmployeePerformance";
+import TaskManagement from "./pages/tasks/TaskManagement";
+import ViewTasks from "./pages/tasks/ViewTasks";
+import MyTasks from "./pages/tasks/MyTasks";
+import EditTask from "./pages/tasks/EditTask";
+import AssignTask from "./pages/tasks/AssignTask";
+import Profile from "./pages/profile/Profile";
+import Notifications from "./pages/notifications/Notifications";
+
+// Placeholder
+const Placeholder = ({ title }) => (
+  <div style={{ padding: "20px" }}>
+    <h2>{title}</h2>
+    <p>This page is still in progress.</p>
+  </div>
+);
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Login Route */}
+        <Route path="/" element={<Login />} />
+
+        {/* Dashboards */}
+        <Route path="/dashboard" element={<Layout><DashboardHR /></Layout>} />
+        <Route path="/dashboard/manager" element={<Layout><DashboardManager /></Layout>} />
+        <Route path="/dashboard/employee" element={<Layout><DashboardEmployee /></Layout>} />
+
+        {/* Tasks */}
+        <Route path="/tasks" element={<Layout><ViewTasks /></Layout>} />
+        <Route path="/tasks/assign" element={<Layout><AssignTask /></Layout>} />
+        <Route path="/tasks/edit/:taskId" element={<Layout><EditTask /></Layout>} />
+        <Route path="/tasks/my-tasks" element={<Layout><MyTasks /></Layout>} />
+        
+        {/* Profile */}
+        <Route path="/profile" element={<Layout><Profile /></Layout>} />
+        <Route path="/meetings" element={<Layout><MeetingPlanning /></Layout>} />
+        <Route path="/performance" element={<Layout><EmployeePerformance /></Layout>} />
+
+        {/* Calendar */}
+        <Route path="/calendar" element={<Layout><CalendarPage /></Layout>} />
+
+        {/* Employees */}
+        <Route path="/employees" element={<Layout><EmployeesList /></Layout>} />
+        <Route path="/employees/add" element={<Layout><AddEmployee /></Layout>} />
+        <Route path="/add-employee" element={<Layout><AddEmployee /></Layout>} />
+        <Route path="/employees/edit/:employeeId" element={<Layout><EditEmployee /></Layout>} />
+
+        {/* Leave Management */}
+        <Route path="/leave" element={<Layout><LeaveManagement /></Layout>} />
+        <Route path="/leave-history" element={<Layout><LeaveHistory /></Layout>} />
+
+        {/* Shift Management */}
+        <Route path="/shift" element={<Layout><ViewShift /></Layout>} />
+        <Route path="/shift/assign" element={<Layout><AssignShift /></Layout>} />
+
+        {/* Notifications */}
+        <Route path="/notifications" element={<Layout><Notifications /></Layout>} />
+
+        {/* Misc / Placeholder Routes */}
+        <Route path="/messages" element={<Layout><Placeholder title="Messages from Employees" /></Layout>} />
+        <Route path="/kpi" element={<Layout><Placeholder title="KRA/KPI Page" /></Layout>} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;

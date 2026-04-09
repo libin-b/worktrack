@@ -1,0 +1,99 @@
+.task-mgmt-page {
+  padding: 24px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.assign-form {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.assign-form input,
+.assign-form textarea,
+.assign-form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.assign-form textarea {
+  resize: vertical;
+  height: 80px;
+}
+
+.assign-form button {
+  align-self: flex-start;
+  padding: 10px 16px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.task-list {
+  overflow-x: auto;
+}
+
+.task-list table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.task-list th,
+.task-list td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  font-size: 14px;
+  vertical-align: top;
+}
+
+.task-list th {
+  background-color: #f4f6f8;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.task-list td {
+  color: #333;
+  word-break: break-word;
+  max-width: 250px;
+}
+
+.task-list tr:last-child td {
+  border-bottom: none;
+}
+
+.task-list .urgent {
+  background-color: #fff0f0;
+}
+
+.task-list button {
+  background-color: #f97316;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.task-list button:hover {
+  background-color: #ea580c;
+}
